@@ -9,6 +9,7 @@ import '@fontsource/fira-code/300.css'
 import '@fontsource/fira-code/400.css'
 import '@fontsource/fira-code/500.css'
 import '@fontsource/fira-code/700.css'
+import { Layout } from 'components/Layout'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -27,7 +28,9 @@ const App: React.FC<MyAppProps> = (props) => {
           <meta name="description" content="Ethereum address tracking tool" />
         </Head>
         <CssBaseline />
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </CacheProvider>
     </>
   )
