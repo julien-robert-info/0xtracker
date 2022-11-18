@@ -10,6 +10,7 @@ import '@fontsource/fira-code/400.css'
 import '@fontsource/fira-code/500.css'
 import '@fontsource/fira-code/700.css'
 import { Layout } from 'components/Layout'
+import { AppThemeProvider } from 'components/Theme'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
@@ -27,10 +28,12 @@ const App: React.FC<MyAppProps> = (props) => {
           <title>0xTracker</title>
           <meta name="description" content="Ethereum address tracking tool" />
         </Head>
-        <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <AppThemeProvider>
+          <CssBaseline />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AppThemeProvider>
       </CacheProvider>
     </>
   )
