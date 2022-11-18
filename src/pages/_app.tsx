@@ -1,6 +1,36 @@
-import '../styles/globals.css'
+import React from 'react'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import { createEmotionCache } from 'utils'
+import { CssBaseline } from '@mui/material'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import '@fontsource/fira-code/300.css'
+import '@fontsource/fira-code/400.css'
+import '@fontsource/fira-code/500.css'
+import '@fontsource/fira-code/700.css'
+
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache
 }
+
+const clientSideEmotionCache = createEmotionCache()
+
+const App: React.FC<MyAppProps> = (props) => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+
+  return (
+    <>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>0xTracker</title>
+          <meta name="description" content="Ethereum address tracking tool" />
+        </Head>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </CacheProvider>
+    </>
+  )
+}
+
+export default App
