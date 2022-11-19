@@ -2,13 +2,18 @@ import { render, screen } from '@testing-library/react'
 import Home from 'pages'
 
 describe('HomePage', () => {
-  it('render a heading', () => {
-    const { container } = render(<Home />)
+  it('render the search form', () => {
+    render(<Home />)
 
-    const heading = screen.getByRole('heading', {
-      name: /0xTracker/i
+    const addressInput = screen.getByRole('textbox', {
+      name: /address/i
     })
 
-    expect(heading).toBeInTheDocument()
+    const searchButton = screen.getByRole('button', {
+      name: /search/i
+    })
+
+    expect(addressInput).toBeInTheDocument()
+    expect(searchButton).toBeInTheDocument()
   })
 })
