@@ -1,0 +1,127 @@
+export const blockExplorerApiResponse = JSON.stringify({
+  status: '1',
+  message: 'OK',
+  result: [
+    {
+      blockNumber: '13553312',
+      timeStamp: '1619016681',
+      hash: '0x598ed562641aa9e59738c364ca93a4cbf14dc87d16f25c99220e8eed0e4f415b',
+      nonce: '0',
+      blockHash:
+        '0xe5d1bdd6b93812fd922450d8a23d8e7259df4ae56c32401db5d53ec09b36a57d',
+      transactionIndex: '12',
+      from: '0xb7d68b12bb410100fbb9c3b25c46c9b52714d064',
+      to: '0x000000000000000000000000000000000000dead',
+      value: '100000000000000000',
+      gas: '21000',
+      gasPrice: '1000000000',
+      isError: '0',
+      txreceipt_status: '1',
+      input: '0x',
+      contractAddress: '',
+      cumulativeGasUsed: '5935526',
+      gasUsed: '21000',
+      confirmations: '22419478',
+      methodId: '0x',
+      functionName: ''
+    },
+    {
+      blockNumber: '14219848',
+      timeStamp: '1620429724',
+      hash: '0x9295bb2932842fa2eea2e1146df794a33652d5dd8cde2db68a9db0cc1ed056a0',
+      nonce: '43',
+      blockHash:
+        '0xbcf0d90927cb68823a663af4554ebfc1482975f5170219b961955256f134901b',
+      transactionIndex: '19',
+      from: '0x93eb7de94c31af5ee91e37debf0e9b088b278126',
+      to: '0x000000000000000000000000000000000000dead',
+      value: '41948962719850839900',
+      gas: '21000',
+      gasPrice: '1000000000',
+      isError: '0',
+      txreceipt_status: '1',
+      input: '0x',
+      contractAddress: '',
+      cumulativeGasUsed: '2564377',
+      gasUsed: '21000',
+      confirmations: '21752942',
+      methodId: '0x',
+      functionName: ''
+    },
+    {
+      blockNumber: '14219858',
+      timeStamp: '1620429744',
+      hash: '0x51183fa455aeeb042de4b50ece7378b5315e74c49fee2be0a74edb3cdc99750a',
+      nonce: '165',
+      blockHash:
+        '0xa3aef52208170ac478e0fa3f71d11641dc543e340cc99410eb0bdd43887f6cb8',
+      transactionIndex: '61',
+      from: '0xffb7a535d851280c076d7fec50c253ea6848eb90',
+      to: '0x000000000000000000000000000000000000dead',
+      value: '18639447986930708927',
+      gas: '21000',
+      gasPrice: '1000000000',
+      isError: '0',
+      txreceipt_status: '1',
+      input: '0x',
+      contractAddress: '',
+      cumulativeGasUsed: '8461089',
+      gasUsed: '21000',
+      confirmations: '21752932',
+      methodId: '0x',
+      functionName: ''
+    },
+    {
+      blockNumber: '14219894',
+      timeStamp: '1620429816',
+      hash: '0x14486c928b2dca4bb8606ebb3a4fa04ec5463c0ab2a810c4aeb32dfdf9716805',
+      nonce: '4121',
+      blockHash:
+        '0x23f86a1dcaf973e3d7c563d0190f5e8ce7ba0766a6c866fcac59006e46834947',
+      transactionIndex: '58',
+      from: '0xa974bdc4e603f0a29fba8358778c6d72ac10c816',
+      to: '0x000000000000000000000000000000000000dead',
+      value: '10456892061000000000',
+      gas: '21000',
+      gasPrice: '1000000000',
+      isError: '0',
+      txreceipt_status: '1',
+      input: '0x',
+      contractAddress: '',
+      cumulativeGasUsed: '8362547',
+      gasUsed: '21000',
+      confirmations: '21752896',
+      methodId: '0x',
+      functionName: ''
+    },
+    {
+      blockNumber: '14219926',
+      timeStamp: '1620429884',
+      hash: '0x7aa10de20bf800ebc8eff2481ee8a82f5f744f43dcf25b8ceba485c09c50192d',
+      nonce: '262',
+      blockHash:
+        '0x57abce531c73e45360a4ecc12661a26792fb3ba62669d6ddf576c117d35b14d4',
+      transactionIndex: '72',
+      from: '0xf3b3e1d9dfb24f91681e03350a55b0ae598219ba',
+      to: '0x000000000000000000000000000000000000dead',
+      value: '656736162000000000',
+      gas: '21000',
+      gasPrice: '1000000000',
+      isError: '0',
+      txreceipt_status: '1',
+      input: '0x',
+      contractAddress: '',
+      cumulativeGasUsed: '9894118',
+      gasUsed: '21000',
+      confirmations: '21752864',
+      methodId: '0x',
+      functionName: ''
+    }
+  ]
+})
+
+export const blockExplorerApiErrorResponse = JSON.stringify({
+  status: '0',
+  message: 'NOTOK',
+  result: 'Error! Invalid address format'
+})
