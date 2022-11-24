@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Tab, Tabs, Typography } from '@mui/material'
 import TrackAddressForm, {
   TrackAddressFormValues
 } from 'components/TrackAddressForm'
+import { useTracker } from 'utils'
 
 const Home = () => {
   const didMount = React.useRef(false)
@@ -12,20 +13,22 @@ const Home = () => {
     maxNodes: 100,
     selectedNetworks: ['137']
   })
-  const [isLoading, setIsLoading] = React.useState(false)
-
-  const track = () => {
-    console.log(formValues.searchAddress)
-  }
+  const { search, transferList, isLoading } = useTracker()
+  const [tabValue, setTabValue] = React.useState(0)
 
   React.useEffect(() => {
     if (!didMount.current) {
       didMount.current = true
       return
     }
-    track()
+
+    search(formValues)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues])
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue)
+  }
 
   return (
     <>
@@ -35,22 +38,61 @@ const Home = () => {
           setTrackAddressFormValues={setFormValues}
           isLoading={isLoading}
         />
-        <Typography
-          variant="h2"
-          color="primary.light"
-          component="h2"
-          gutterBottom
-        >
-          0xTracker
-        </Typography>
-        <Typography
-          variant="h5"
-          component="div"
-          color="text.secondary"
-          gutterBottom
-        >
-          Find related Ethereum addresses from token transfers
-        </Typography>
+        <Box role="main">
+          {transferList.length > 0 ? (
+            <>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabValue} onChange={handleTabChange} centered>
+                  <Tab label="List view" />
+                  <Tab label="Graph view" />
+                </Tabs>
+              </Box>
+              <div hidden={tabValue !== 0}>
+                {tabValue === 0 && (
+                  <Typography
+                    variant="h2"
+                    color="primary.light"
+                    component="h2"
+                    gutterBottom
+                  >
+                    List view
+                  </Typography>
+                )}
+              </div>
+              <div hidden={tabValue !== 1}>
+                {tabValue === 1 && (
+                  <Typography
+                    variant="h2"
+                    color="primary.light"
+                    component="h2"
+                    gutterBottom
+                  >
+                    Graph view
+                  </Typography>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <Typography
+                variant="h2"
+                color="primary.light"
+                component="h2"
+                gutterBottom
+              >
+                0xTracker
+              </Typography>
+              <Typography
+                variant="h5"
+                component="div"
+                color="text.secondary"
+                gutterBottom
+              >
+                Find related Ethereum addresses from token transfers
+              </Typography>
+            </>
+          )}
+        </Box>
       </Box>
     </>
   )
