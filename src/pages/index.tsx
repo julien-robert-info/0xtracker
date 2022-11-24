@@ -13,7 +13,7 @@ const Home = () => {
     maxNodes: 100,
     selectedNetworks: ['137']
   })
-  const { search, transferList, isLoading } = useTracker()
+  const { search, transferList, names, isLoading } = useTracker()
   const [tabValue, setTabValue] = React.useState(0)
 
   React.useEffect(() => {
@@ -22,7 +22,7 @@ const Home = () => {
       return
     }
 
-    search(formValues)
+    search(formValues, setFormValues)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues])
 

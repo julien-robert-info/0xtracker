@@ -1,3 +1,5 @@
+import { NetworkConnector } from '@web3-react/network-connector'
+
 interface ChainInfo {
   chainName: string
   nativeCurrency: {
@@ -73,3 +75,16 @@ export const chains: { [chainId: number]: ChainInfo } = {
     blockExplorerApiToken: process.env.NEXT_PUBLIC_GNOSIS_API_TOKEN
   }
 }
+
+const urls: { [chainId: number]: string } = Object.keys(chains).reduce<{
+  [chainId: number]: string
+}>((accumulator, chainId) => {
+  accumulator[Number(chainId)] = chains[Number(chainId)].rpcUrls
+
+  return accumulator
+}, {})
+
+export const networkConnector = new NetworkConnector({
+  urls,
+  defaultChainId: 1
+})

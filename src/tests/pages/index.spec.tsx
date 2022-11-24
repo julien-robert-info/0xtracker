@@ -2,7 +2,6 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import fetch from 'jest-fetch-mock'
 import Home from 'pages'
 import { blockExplorerApiResponse } from 'tests/__mocks__/blockExplorerAPI'
-import { TransferList } from 'utils'
 
 describe('HomePage', () => {
   beforeEach(() => {
@@ -26,7 +25,6 @@ describe('HomePage', () => {
 
   it('switch display to tabs on search result', async () => {
     fetch.mockResponse(blockExplorerApiResponse)
-
     render(<Home />)
 
     const addressInput = screen.getByRole('textbox', {

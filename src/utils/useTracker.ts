@@ -1,10 +1,12 @@
+import React from 'react'
 import { TrackAddressFormValues } from 'components/TrackAddressForm'
 import { ethers } from 'ethers'
-import React from 'react'
+import { useWeb3React } from '@web3-react/core'
 import {
   getTransfersFromtxList,
   getTxListFromAddress,
-  TransferList
+  TransferList,
+  useEnsNames
 } from 'utils'
 
 type Search = {
@@ -28,12 +30,22 @@ export const useTracker = () => {
     maxNodes: 0,
     selectedNetworks: []
   })
+  const { library } = useWeb3React()
+  const names = useEnsNames(transferList)
 
-  const search = (formValues: TrackAddressFormValues) => {
+  const search = async (
+    formValues: TrackAddressFormValues,
+    setFormValues: (formValues: TrackAddressFormValues) => void
+  ) => {
     if (formValues.searchAddress !== '') {
       if (!ethers.utils.isAddress(formValues.searchAddress)) {
-        console.log('invalid address!')
-
+        //ENS resolution
+        const resolved = await library?.resolveName(formValues.searchAddress)
+        if (resolved) {
+          setFormValues({ ...formValues, searchAddress: resolved as string })
+        } else {
+          console.log('invalid address!')
+        }
         return
       }
 
@@ -104,6 +116,7 @@ export const useTracker = () => {
                 .map((item) => item.target)
             ])
           ]
+
           let transfersAdd: TransferList =
             allTransfersUniqueAddress.length <= searchValue.current.maxNodes
               ? transfers
@@ -147,10 +160,11 @@ export const useTracker = () => {
             )
           ].missingNodes =
             searchValue.current.maxNodes - newUniqueTransferListAddress.length
-
           return [...transferList, ...transfersAdd]
         })
 
+        //dig through transfers addresses for new search
+        //depending on minToDig and missingNodes
         const uniqueTransferAddress = [
           ...new Set([
             ...transfers.map((item) => item.source),
@@ -158,8 +172,6 @@ export const useTracker = () => {
           ])
         ]
 
-        //dig through transfers addresses for new search
-        //depending on minToDig and missingNodes
         if (
           missingNodes.current[
             missingNodes.current.findIndex(
@@ -204,5 +216,5 @@ export const useTracker = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchList])
 
-  return { search, transferList, isLoading }
+  return { search, transferList, names, isLoading }
 }

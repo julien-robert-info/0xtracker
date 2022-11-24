@@ -4,6 +4,12 @@ import Head from 'next/head'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import { createEmotionCache } from 'utils'
 import { CssBaseline } from '@mui/material'
+import { Web3ReactProvider } from '@web3-react/core'
+import {
+  ExternalProvider,
+  JsonRpcFetchFunc,
+  Web3Provider
+} from '@ethersproject/providers'
 
 import '@fontsource/fira-code/300.css'
 import '@fontsource/fira-code/400.css'
@@ -14,6 +20,10 @@ import { AppThemeProvider } from 'components/Theme'
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
+}
+
+const getLibrary = (provider: ExternalProvider | JsonRpcFetchFunc) => {
+  return new Web3Provider(provider)
 }
 
 const clientSideEmotionCache = createEmotionCache()
@@ -30,9 +40,11 @@ const App: React.FC<MyAppProps> = (props) => {
         </Head>
         <AppThemeProvider>
           <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Web3ReactProvider>
         </AppThemeProvider>
       </CacheProvider>
     </>

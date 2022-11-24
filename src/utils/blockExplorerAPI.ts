@@ -48,19 +48,19 @@ export const getTxListFromAddress = async (
     try {
       const response = await fetch(request)
       data = await response.json()
+      if (data.status === '1') {
+        txList = [...txList, ...data.result]
+        startblock = Number(txList[txList.length - 1].blockNumber) + 1
+      } else {
+        console.log(
+          `${apiUrl} error : ${data.message} requesting ${address} from block ${startblock}`
+        )
+        console.log(data.result)
+      }
     } catch (error) {
       console.log(error)
     }
-    if (data.status === '1') {
-      txList = [...txList, ...data.result]
-      startblock = Number(txList[txList.length - 1].blockNumber) + 1
-    } else {
-      console.log(
-        `${apiUrl} error : ${data.message} requesting ${address} from block ${startblock}`
-      )
-      console.log(data.result)
-    }
-  } while (data.result?.length == 10000)
+  } while (data?.result?.length == 10000)
   setIsFetching(false)
 
   return txList
