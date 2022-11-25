@@ -9,6 +9,8 @@ export type TransferList = Array<{
   hash: string
 }>
 
+export const DEBANK_URL = 'https://debank.com/profile/'
+
 interface Tx {
   blockNumber: string
   hash: string

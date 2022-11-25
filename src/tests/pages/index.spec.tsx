@@ -45,7 +45,7 @@ describe('HomePage', () => {
     fireEvent.click(searchButton)
 
     expect(
-      await within(main).findByRole('heading', { name: /List view/i })
+      await within(main).findByRole('button', { name: /Polygon/i })
     ).toBeInTheDocument()
   })
 })

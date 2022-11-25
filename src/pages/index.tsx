@@ -4,6 +4,7 @@ import TrackAddressForm, {
   TrackAddressFormValues
 } from 'components/TrackAddressForm'
 import { useTracker } from 'utils'
+import TrackAddressList from 'components/TrackAddressList'
 
 const Home = () => {
   const didMount = React.useRef(false)
@@ -49,14 +50,7 @@ const Home = () => {
               </Box>
               <div hidden={tabValue !== 0}>
                 {tabValue === 0 && (
-                  <Typography
-                    variant="h2"
-                    color="primary.light"
-                    component="h2"
-                    gutterBottom
-                  >
-                    List view
-                  </Typography>
+                  <TrackAddressList transferList={transferList} names={names} />
                 )}
               </div>
               <div hidden={tabValue !== 1}>
