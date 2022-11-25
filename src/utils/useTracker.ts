@@ -6,6 +6,7 @@ import {
   getTransfersFromtxList,
   getTxListFromAddress,
   TransferList,
+  uniqueAddressList,
   useEnsNames
 } from 'utils'
 
@@ -106,33 +107,22 @@ export const useTracker = () => {
         ].missingNodes > 0
       ) {
         setTransferList((transferList) => {
-          const allTransfersUniqueAddress = [
-            ...new Set([
-              ...[...transferList, ...transfers]
-                .filter((i) => i.chainId === newSearch.chainId)
-                .map((item) => item.source),
-              ...[...transferList, ...transfers]
-                .filter((i) => i.chainId === newSearch.chainId)
-                .map((item) => item.target)
-            ])
-          ]
+          const allTransfersUniqueAddress = uniqueAddressList(
+            [...transferList, ...transfers].filter(
+              (i) => i.chainId === newSearch.chainId
+            )
+          )
 
           let transfersAdd: TransferList =
             allTransfersUniqueAddress.length <= searchValue.current.maxNodes
               ? transfers
               : []
 
-          let newUniqueTransferListAddress = [
-            ...new Set([
-              ...[...transferList, ...transfersAdd]
-                .filter((i) => i.chainId === newSearch.chainId)
-                .map((item) => item.source),
-              ...[...transferList, ...transfersAdd]
-                .filter((i) => i.chainId === newSearch.chainId)
-                .map((item) => item.target)
-            ])
-          ]
-
+          let newUniqueTransferListAddress = uniqueAddressList(
+            [...transferList, ...transfersAdd].filter(
+              (i) => i.chainId === newSearch.chainId
+            )
+          )
           let i = 0
           while (
             newUniqueTransferListAddress.length <
@@ -140,16 +130,11 @@ export const useTracker = () => {
             transfersAdd.length < transfers.length
           ) {
             transfersAdd.push(transfers[i])
-            newUniqueTransferListAddress = [
-              ...new Set([
-                ...[...transferList, ...transfersAdd]
-                  .filter((i) => i.chainId === newSearch.chainId)
-                  .map((item) => item.source),
-                ...[...transferList, ...transfersAdd]
-                  .filter((i) => i.chainId === newSearch.chainId)
-                  .map((item) => item.target)
-              ])
-            ]
+            newUniqueTransferListAddress = uniqueAddressList(
+              [...transferList, ...transfersAdd].filter(
+                (i) => i.chainId === newSearch.chainId
+              )
+            )
 
             i++
           }
@@ -165,13 +150,6 @@ export const useTracker = () => {
 
         //dig through transfers addresses for new search
         //depending on minToDig and missingNodes
-        const uniqueTransferAddress = [
-          ...new Set([
-            ...transfers.map((item) => item.source),
-            ...transfers.map((item) => item.target)
-          ])
-        ]
-
         if (
           missingNodes.current[
             missingNodes.current.findIndex(
@@ -179,7 +157,7 @@ export const useTracker = () => {
             )
           ].missingNodes > 0
         ) {
-          uniqueTransferAddress.map(async (adr) => {
+          uniqueAddressList(transfers).map(async (adr) => {
             if (
               transfers.filter((i) => i.source === adr || i.target === adr)
                 .length >= searchValue.current.minToDig &&

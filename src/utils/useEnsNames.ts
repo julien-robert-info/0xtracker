@@ -1,8 +1,8 @@
 import { useWeb3React } from '@web3-react/core'
 import React from 'react'
-import { TransferList } from './blockExplorerAPI'
+import { TransferList, uniqueAddressList } from './blockExplorerAPI'
 
-type Names = {
+export type Names = {
   address: string
   name: string
 }[]
@@ -14,12 +14,7 @@ export const useEnsNames = (transferList: TransferList) => {
   const { library } = useWeb3React()
 
   const updateNames = () => {
-    const uniqueTransferListAddress = [
-      ...new Set([
-        ...transferList.map((item) => item.source),
-        ...transferList.map((item) => item.target)
-      ])
-    ]
+    const uniqueTransferListAddress = uniqueAddressList(transferList)
 
     uniqueTransferListAddress
       .filter((i) => verifiedAddress.current.findIndex((j) => j === i) === -1)

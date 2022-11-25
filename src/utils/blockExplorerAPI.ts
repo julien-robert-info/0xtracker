@@ -121,3 +121,12 @@ export const getTransfersFromtxList = (
 
   return transfers
 }
+
+export const uniqueAddressList = (transferList: TransferList) => {
+  return [
+    ...new Set([
+      ...transferList.map((item) => item.source),
+      ...transferList.map((item) => item.target)
+    ])
+  ]
+}
