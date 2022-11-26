@@ -16,6 +16,7 @@ describe('TrackAddressGraph component', () => {
     expect(graph).toBeInTheDocument()
     expect(graph?.querySelector('.nodes')).toBeInTheDocument()
     expect(graph?.querySelector('.links')).toBeInTheDocument()
+    expect(container.querySelector('.legend')).toBeInTheDocument()
   })
 
   it('render nodes and links', () => {

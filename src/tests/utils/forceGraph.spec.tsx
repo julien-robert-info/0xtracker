@@ -1,6 +1,5 @@
 import { getDataFromTransferList, Names, TransferList } from 'utils'
 import { mockedTransferList } from 'tests/__mocks__/TrackAddressList'
-import { render } from 'react-dom'
 
 describe('forceGraph helper getDataFromTransferList', () => {
   it('find nodes and links', async () => {

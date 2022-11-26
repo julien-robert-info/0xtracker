@@ -19,6 +19,20 @@ const colors: graphColors = [
   { chainId: 100, node: '#04795b', text: '#fff', label: 'xDai' }
 ]
 
+//legend parameters
+const tickSize = 6
+const l = {
+  width: 320,
+  height: 44 + tickSize,
+  marginTop: 18,
+  marginRight: 0,
+  marginBottom: 16 + tickSize,
+  marginLeft: 5
+}
+const ticks = l.width / 64
+const tickFormat = d3.format('.0f')
+const labelWidth = 40
+
 export const getDataFromTransferList = (
   transferList: TransferList,
   names: Names
@@ -110,7 +124,53 @@ export const initGraph = (svgRef: React.MutableRefObject<null>) => {
     const graph = svg.append('g').attr('class', 'graph')
     graph.append('g').attr('class', 'links')
     graph.append('g').attr('class', 'nodes')
+
+    const legend = svg.append('g').attr('class', 'legend')
+    const linkLegend = legend
+      .append('g')
+      .attr('class', 'linkLegend')
+      .attr('visibility', 'hidden')
+
+    linkLegend
+      .append('image')
+      .attr('x', l.marginLeft)
+      .attr('y', l.marginTop)
+      .attr('width', l.width - l.marginLeft - l.marginRight)
+      .attr('height', l.height - l.marginTop - l.marginBottom)
+      .attr('preserveAspectRatio', 'none')
+
+    linkLegend
+      .append('g')
+      .attr('transform', `translate(0,${l.height - l.marginBottom})`)
+      .append('text')
+      .attr('class', 'title')
+      .attr('x', l.marginLeft + 6)
+      .attr('y', l.marginTop + l.marginBottom - l.height - 6)
+      .attr('fill', 'currentColor')
+      .attr('text-anchor', 'start')
+      .attr('font-weight', 'bold')
+      .text('Transfers')
+
+    legend
+      .append('g')
+      .attr('class', 'nodeLegend')
+      .attr('transform', `translate(0,${l.height + l.marginTop})`)
+      .attr('visibility', 'hidden')
   }
+}
+
+const ramp = (color: any, n = 256) => {
+  const canvas = document.createElement('canvas')
+  canvas.width = n
+  canvas.height = 1
+  const context = canvas.getContext('2d')
+  if (context) {
+    for (let i = 0; i < n; ++i) {
+      context.fillStyle = color(i / (n - 1))
+      context.fillRect(i, 0, 1, 1)
+    }
+  }
+  return canvas
 }
 
 export const updateGraph = (
@@ -202,6 +262,87 @@ export const updateGraph = (
           return update
         }
       )
+
+    //Legend
+    const linkLegend = svg.select('.linkLegend')
+    if (graphData.links.length === 0) {
+      linkLegend.attr('visibility', 'hidden')
+    } else {
+      linkLegend.attr('visibility', 'visible')
+      const x = Object.assign(
+        linkColors
+          .copy()
+          .interpolator(
+            d3.interpolateRound(l.marginLeft, l.width - l.marginRight)
+          ),
+        {
+          range() {
+            return [l.marginLeft, l.width - l.marginRight]
+          }
+        }
+      )
+      const n = Math.round(ticks + 1)
+      const tickValues = d3
+        .range(n)
+        .map((i) => d3.quantile(linkColors.domain(), i / (n - 1)))
+
+      linkLegend
+        .select('image')
+        .attr('xlink:href', ramp(linkColors.interpolator()).toDataURL())
+
+      linkLegend
+        .select<SVGGElement>('g')
+        .call(
+          d3
+            .axisBottom(x)
+            .ticks(ticks)
+            .tickFormat(tickFormat)
+            .tickSize(tickSize)
+            .tickValues(tickValues as number[])
+        )
+        .call((g) =>
+          g
+            .selectAll('.tick line')
+            .attr('y1', l.marginTop + l.marginBottom - l.height)
+        )
+        .call((g) => g.select('.domain').remove())
+    }
+
+    const colorList = [...new Set(graphData.nodes.map((item) => item.color))]
+    const nodeLegend = svg.select('.nodeLegend')
+    if (colorList.length < 2) {
+      nodeLegend.attr('visibility', 'hidden')
+    } else {
+      nodeLegend
+        .attr('visibility', 'visible')
+        .selectAll('g')
+        .data(colorList)
+        .join((enter) => {
+          let g = enter
+            .append('g')
+            .attr(
+              'transform',
+              (d, i) =>
+                `translate(${
+                  l.marginLeft +
+                  nodeRadius +
+                  i * ((l.marginLeft + nodeRadius) * 2 + labelWidth)
+                },0)`
+            )
+
+          g.append('circle')
+            .attr('r', nodeRadius)
+            .attr('fill', (d) => d)
+
+          g.append('text')
+            .attr('dy', '.3em')
+            .attr('x', l.marginLeft + nodeRadius)
+            .attr('fill', 'currentColor')
+            .text((d) => colors[colors.findIndex((i) => i.node === d)].label)
+
+          return g
+        })
+    }
 
     //Zoom
     svg.call(

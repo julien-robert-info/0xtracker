@@ -36,7 +36,7 @@ const TrackAddressGraph: React.FC<{
   }, [graphData])
 
   return (
-    <div ref={svgContainerRef} style={{ maxHeight: '800px' }}>
+    <div ref={svgContainerRef} style={{ maxHeight: '800px' }} role="graph">
       <svg
         ref={svgRef}
         width={width}
