@@ -5,7 +5,8 @@ import {
   initGraph,
   Names,
   TransferList,
-  updateGraph
+  updateGraph,
+  useD3
 } from 'utils'
 import { useTheme } from '@mui/material/styles'
 
@@ -14,14 +15,13 @@ const TrackAddressGraph: React.FC<{
   names: Names
 }> = ({ transferList, names }) => {
   const didMount = React.useRef(false)
-  const svgRef = React.useRef(null)
+  const { svgRef, svgContainerRef, getsvgContainerSize, width, height } =
+    useD3()
   const graphData: GraphData = React.useMemo(
     () => getDataFromTransferList(transferList, names),
     [transferList, names]
   )
 
-  const width = 1080
-  const height = 720
   const theme = useTheme()
 
   React.useEffect(() => {
@@ -36,12 +36,14 @@ const TrackAddressGraph: React.FC<{
   }, [graphData])
 
   return (
-    <svg
-      ref={svgRef}
-      width={width}
-      height={height}
-      style={{ backgroundColor: theme.palette.action.disabledBackground }}
-    ></svg>
+    <div ref={svgContainerRef} style={{ maxHeight: '800px' }}>
+      <svg
+        ref={svgRef}
+        width={width}
+        height={height}
+        style={{ backgroundColor: theme.palette.action.disabledBackground }}
+      ></svg>
+    </div>
   )
 }
 
