@@ -17,3 +17,10 @@ export type GraphData = {
   nodes: Node[]
   links: Link[]
 }
+
+export type Datum = {
+  x: number
+  y: number
+  fx: number | null
+  fy: number | null
+}

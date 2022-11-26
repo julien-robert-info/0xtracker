@@ -22,7 +22,7 @@ export const chains: { [chainId: number]: ChainInfo } = {
       decimals: 18
     },
     rpcUrls: 'https://rpc.ankr.com/eth',
-    blockExplorerUrls: 'https://etherscan.io',
+    blockExplorerUrls: 'https://etherscan.io/',
     blockExplorerApiUrls: 'https://api.etherscan.io/api',
     blockExplorerApiToken: process.env.NEXT_PUBLIC_ETHEREUM_API_TOKEN
   },
@@ -70,8 +70,8 @@ export const chains: { [chainId: number]: ChainInfo } = {
       decimals: 18
     },
     rpcUrls: 'https://rpc.xdaichain.com/',
-    blockExplorerUrls: 'https://blockscout.com/poa/xdai',
-    blockExplorerApiUrls: 'https://api.polygonscan.com/api',
+    blockExplorerUrls: 'https://gnosisscan.io/',
+    blockExplorerApiUrls: 'https://api.gnosisscan.io/api',
     blockExplorerApiToken: process.env.NEXT_PUBLIC_GNOSIS_API_TOKEN
   }
 }

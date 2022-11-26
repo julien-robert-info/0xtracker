@@ -137,7 +137,7 @@ const TrackAddressList: React.FC<{
                             underline="hover"
                             sx={{ display: 'block', color: 'text.secondary' }}
                           >
-                            {`${chainId}-${address.address}-${txList.address}-${tx}`}
+                            {`${tx}`}
                           </Link>
                         ))}
                       </AccordionDetails>
