@@ -1,4 +1,3 @@
-import { chains } from 'data/networks'
 import fetch from 'jest-fetch-mock'
 import {
   blockExplorerApiErrorResponse,
@@ -25,26 +24,6 @@ describe('blockExplorerAPI helper getTxListFromAddress', () => {
     expect(mockSetIsFetching).toHaveBeenNthCalledWith(2, false)
   })
 
-  it('use API token if exist', async () => {
-    fetch.mockResponse(blockExplorerApiResponse)
-
-    await getTxListFromAddress(searchAddress, chainId, mockSetIsFetching)
-    let apiUrl = chains[chainId].blockExplorerApiUrls
-    let request =
-      `${apiUrl}?module=account&action=txlist&address=${searchAddress}` +
-      `&startblock=0&endblock=latest&sort=asc&apikey=YOUR_API_TOKEN`
-
-    expect(fetch).toHaveBeenCalledWith(request)
-
-    await getTxListFromAddress(searchAddress, 56, mockSetIsFetching)
-    apiUrl = chains[56].blockExplorerApiUrls
-    request =
-      `${apiUrl}?module=account&action=txlist&address=${searchAddress}` +
-      `&startblock=0&endblock=latest&sort=asc`
-
-    expect(fetch).toHaveBeenLastCalledWith(request)
-  })
-
   it('return an array of transactions', async () => {
     fetch.mockResponse(blockExplorerApiResponse)
 
@@ -59,16 +38,12 @@ describe('blockExplorerAPI helper getTxListFromAddress', () => {
   })
 
   it('log errors', async () => {
-    fetch.mockResponse(blockExplorerApiErrorResponse)
+    fetch.mockReject(() => Promise.reject(blockExplorerApiErrorResponse))
     const logSpy = jest.spyOn(console, 'log')
 
     await getTxListFromAddress('notanaddress', chainId, mockSetIsFetching)
 
-    expect(logSpy).toHaveBeenNthCalledWith(
-      1,
-      'https://api.polygonscan.com/api error : NOTOK requesting notanaddress from block 0'
-    )
-    expect(logSpy).toHaveBeenNthCalledWith(2, 'Error! Invalid address format')
+    expect(logSpy).toHaveBeenCalledWith(blockExplorerApiErrorResponse)
   })
 })
 

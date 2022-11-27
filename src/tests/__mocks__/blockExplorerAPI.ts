@@ -120,8 +120,5 @@ export const blockExplorerApiResponse = JSON.stringify({
   ]
 })
 
-export const blockExplorerApiErrorResponse = JSON.stringify({
-  status: '0',
-  message: 'NOTOK',
-  result: 'Error! Invalid address format'
-})
+export const blockExplorerApiErrorResponse =
+  'NOTOK Error! Invalid address format requesting https://api.polygonscan.com/api-notanaddress from block 0'

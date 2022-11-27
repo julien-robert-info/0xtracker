@@ -9,7 +9,7 @@ interface ChainInfo {
   }
   rpcUrls: string
   blockExplorerUrls: string
-  blockExplorerApiUrls?: string
+  blockExplorerApiUrls: string
   blockExplorerApiToken?: string
 }
 
@@ -24,7 +24,7 @@ export const chains: { [chainId: number]: ChainInfo } = {
     rpcUrls: 'https://rpc.ankr.com/eth',
     blockExplorerUrls: 'https://etherscan.io/',
     blockExplorerApiUrls: 'https://api.etherscan.io/api',
-    blockExplorerApiToken: process.env.NEXT_PUBLIC_ETHEREUM_API_TOKEN
+    blockExplorerApiToken: process.env.API_TOKEN_ETHERSCAN
   },
   56: {
     chainName: 'BSC',
@@ -36,7 +36,7 @@ export const chains: { [chainId: number]: ChainInfo } = {
     rpcUrls: 'https://bsc-dataseed.binance.org',
     blockExplorerUrls: 'https://bscscan.com/',
     blockExplorerApiUrls: 'https://api.bscscan.com/api',
-    blockExplorerApiToken: process.env.NEXT_PUBLIC_BSC_API_TOKEN
+    blockExplorerApiToken: process.env.API_TOKEN_BSCSCAN
   },
   137: {
     chainName: 'Polygon',
@@ -48,7 +48,7 @@ export const chains: { [chainId: number]: ChainInfo } = {
     rpcUrls: 'https://polygon-rpc.com',
     blockExplorerUrls: 'https://polygonscan.com/',
     blockExplorerApiUrls: 'https://api.polygonscan.com/api',
-    blockExplorerApiToken: process.env.NEXT_PUBLIC_POLYGON_API_TOKEN
+    blockExplorerApiToken: process.env.API_TOKEN_POLYGONSCAN
   },
   250: {
     chainName: 'Fantom',
@@ -60,7 +60,7 @@ export const chains: { [chainId: number]: ChainInfo } = {
     rpcUrls: 'https://rpc.ftm.tools',
     blockExplorerUrls: 'https://ftmscan.com/',
     blockExplorerApiUrls: 'https://api.ftmscan.com/api',
-    blockExplorerApiToken: process.env.NEXT_PUBLIC_FANTOM_API_TOKEN
+    blockExplorerApiToken: process.env.API_TOKEN_FANTOMSCAN
   },
   100: {
     chainName: 'Gnosis',
@@ -72,7 +72,7 @@ export const chains: { [chainId: number]: ChainInfo } = {
     rpcUrls: 'https://rpc.xdaichain.com/',
     blockExplorerUrls: 'https://gnosisscan.io/',
     blockExplorerApiUrls: 'https://api.gnosisscan.io/api',
-    blockExplorerApiToken: process.env.NEXT_PUBLIC_GNOSIS_API_TOKEN
+    blockExplorerApiToken: process.env.API_TOKEN_GNOSISSCAN
   }
 }
 
