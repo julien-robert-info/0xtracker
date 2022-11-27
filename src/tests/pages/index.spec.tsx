@@ -44,8 +44,6 @@ describe('HomePage', () => {
     })
     fireEvent.click(searchButton)
 
-    expect(
-      await within(main).findByRole('button', { name: /Polygon/i })
-    ).toBeInTheDocument()
+    expect(await within(main).findByRole('graph')).toBeInTheDocument()
   })
 })

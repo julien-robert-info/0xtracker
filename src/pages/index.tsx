@@ -12,11 +12,11 @@ const Home = () => {
   const [formValues, setFormValues] = React.useState<TrackAddressFormValues>({
     searchAddress: '',
     minToDig: 2,
-    maxNodes: 100,
+    maxNodes: 30,
     selectedNetworks: ['137']
   })
   const { search, transferList, names, isLoading } = useTracker()
-  const [tabValue, setTabValue] = React.useState(0)
+  const [tabValue, setTabValue] = React.useState(1)
 
   React.useEffect(() => {
     if (!didMount.current) {

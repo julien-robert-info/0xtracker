@@ -1,6 +1,6 @@
 # 0xTracker
 
-Track Ethereum address from token transfers and get a graphical representation of all addresses it interracted with on multiple EVM-compatible blockchains.
+Find related Ethereum addresses from token transfers and get a graphical representation of all addresses it interracted with on multiple EVM-compatible blockchains.
 
 ## Requirement
 
@@ -27,3 +27,11 @@ If you wanted to run this site in production, you should install modules then bu
 You should run `npm run build` again any time you make changes to the site.
 
 Note: If you are already running a webserver on port 80 (e.g. Macs usually have the Apache webserver running on port 80) you can still start the example in production mode by passing a different port as an Environment Variable when starting (e.g. `PORT=3000 npm start`).
+
+## Environment
+
+To get faster results, you can set up block explorer API token in the .env file.
+
+    # API_TOKEN_ETHERSCAN = 'YOUR_API_TOKEN'
+
+Uncomment the corresponding line and paste your API token
