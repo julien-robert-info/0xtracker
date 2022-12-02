@@ -15,6 +15,7 @@ const getTxList = async (req: NextApiRequest, res: NextApiResponse) => {
     `&startblock=${startblock}&endblock=latest&sort=asc` +
     (apiToken !== undefined ? `&apikey=${apiToken}` : '')
 
+  // Rate limiter
   if (apiToken) {
     await limit()
   } else {
@@ -26,6 +27,7 @@ const getTxList = async (req: NextApiRequest, res: NextApiResponse) => {
     if (response.status === '1') {
       res.status(200).json(response)
     } else {
+      // catch reponse status error
       throw `${response.message} ${response.result} requesting ${apiUrl}-${address} from block ${startblock}`
     }
   } catch (error) {
@@ -33,6 +35,7 @@ const getTxList = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
+// Allow large response data
 export const config = {
   api: {
     responseLimit: false

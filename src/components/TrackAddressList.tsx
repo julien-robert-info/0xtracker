@@ -14,6 +14,7 @@ const TrackAddressList: React.FC<{
   transferList: TransferList
   names: Names
 }> = ({ transferList, names }) => {
+  // Construct hierarchical tree for accordion menu
   let tree: Array<
     Array<{
       address: string
@@ -22,11 +23,13 @@ const TrackAddressList: React.FC<{
   > = []
 
   const trackChains = [...new Set(transferList.map((item) => item.chainId))]
+  // Lvl 1 Networks
   trackChains.map((chainId) => {
     const addresses = uniqueAddressList(
       transferList.filter((i) => i.chainId === chainId)
     )
 
+    // Lvl 2 Addresses
     addresses.map((address) => {
       let transfers: Array<{ address: string; hashs: string[] }> = []
 
@@ -38,6 +41,7 @@ const TrackAddressList: React.FC<{
         )
       ).filter((i) => i !== address)
 
+      // Lvl 3 Interracted with addresses
       uniqueTransferAddresses.map((transferAddress) => {
         transfers.push({
           address: transferAddress,
@@ -52,6 +56,7 @@ const TrackAddressList: React.FC<{
             .filter((value, index, self) => self.indexOf(value) === index)
         })
       })
+      // Lvl 4 Tx hashs
       if (transfers.length > 1) {
         tree[chainId] = [
           ...(tree[chainId] ?? []),

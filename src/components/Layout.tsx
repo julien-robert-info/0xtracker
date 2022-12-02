@@ -10,6 +10,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { active, activate } = useWeb3React()
 
+  // Ethers provider auto-connect
   React.useEffect(() => {
     async function connect() {
       if (!active) {

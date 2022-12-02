@@ -22,11 +22,11 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
+const clientSideEmotionCache = createEmotionCache()
+
 const getLibrary = (provider: ExternalProvider | JsonRpcFetchFunc) => {
   return new Web3Provider(provider)
 }
-
-const clientSideEmotionCache = createEmotionCache()
 
 const App: React.FC<MyAppProps> = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props

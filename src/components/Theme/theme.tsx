@@ -10,6 +10,7 @@ enum ThemeName {
 
 export type ThemeNameType = keyof typeof ThemeName
 
+// Integration of NextLink with mui Link component
 const LinkBehaviour = React.forwardRef<HTMLAnchorElement, NextLinkProps>(
   function LinkBehaviour(props, ref) {
     return <NextLink ref={ref} {...props} />

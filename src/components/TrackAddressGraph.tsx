@@ -15,15 +15,16 @@ const TrackAddressGraph: React.FC<{
   names: Names
 }> = ({ transferList, names }) => {
   const didMount = React.useRef(false)
-  const { svgRef, svgContainerRef, getsvgContainerSize, width, height } =
-    useD3()
+  const { svgRef, svgContainerRef, width, height } = useD3()
   const graphData: GraphData = React.useMemo(
     () => getDataFromTransferList(transferList, names),
     [transferList, names]
   )
 
+  // Needed for svg backgroundColor
   const theme = useTheme()
 
+  // init graph on 1st render then update graph on graphData update
   React.useEffect(() => {
     if (!didMount.current) {
       didMount.current = true

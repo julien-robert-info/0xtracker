@@ -18,6 +18,7 @@ interface Tx {
   functionName: string
 }
 
+// Retrieve tx list for a given address from blockExplorer API behind API route
 export const getTxListFromAddress = async (
   address: string,
   chainId: number,
@@ -28,6 +29,8 @@ export const getTxListFromAddress = async (
   setIsFetching(true)
   let startblock = 0
   let response
+  // blockExplorer API gives 10000 max result
+  // Loop till we get all, filtering with startblock
   do {
     try {
       response = await fetch(
@@ -49,6 +52,7 @@ export const getTxListFromAddress = async (
   return txList
 }
 
+// Extract transfer tx from tx list
 export const getTransfersFromtxList = (
   chainId: number,
   address: string,

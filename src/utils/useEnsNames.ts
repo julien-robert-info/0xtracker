@@ -16,6 +16,7 @@ export const useEnsNames = (transferList: TransferList) => {
   const updateNames = () => {
     const uniqueTransferListAddress = uniqueAddressList(transferList)
 
+    // Filter already searched addresses before looping through new ones
     uniqueTransferListAddress
       .filter((i) => verifiedAddress.current.findIndex((j) => j === i) === -1)
       .map(async (adr) => {
@@ -31,17 +32,20 @@ export const useEnsNames = (transferList: TransferList) => {
       })
   }
 
+  // Update names on transferList update
   React.useEffect(() => {
     if (!didMount.current) {
       didMount.current = true
       return
     }
 
+    // Reset verifiedAddress if transferList is empty
     if (transferList.length === 0) {
       verifiedAddress.current = []
       return
     }
 
+    // Update names if provider is connected
     if (library) {
       updateNames()
     }

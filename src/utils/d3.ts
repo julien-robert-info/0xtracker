@@ -40,6 +40,7 @@ export const useD3 = () => {
     }
   }
 
+  // Update width & height properties on window resize event
   React.useEffect(() => {
     getsvgContainerSize()
     window.addEventListener('resize', getsvgContainerSize)

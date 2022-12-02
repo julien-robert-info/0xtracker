@@ -13,11 +13,12 @@ const Home = () => {
     searchAddress: '',
     minToDig: 2,
     maxNodes: 30,
-    selectedNetworks: ['137']
+    selectedNetworks: ['1']
   })
   const { search, transferList, names, isLoading } = useTracker()
   const [tabValue, setTabValue] = React.useState(1)
 
+  // Launch new search on formvalues update
   React.useEffect(() => {
     if (!didMount.current) {
       didMount.current = true

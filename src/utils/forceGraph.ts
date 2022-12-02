@@ -1,6 +1,14 @@
 import * as d3 from 'd3'
 import { SimulationNodeDatum } from 'd3'
-import { Datum, GraphData, Link, Names, Node, TransferList } from 'utils'
+import {
+  Datum,
+  DEBANK_URL,
+  GraphData,
+  Link,
+  Names,
+  Node,
+  TransferList
+} from 'utils'
 
 type graphColors = {
   chainId: number
@@ -228,10 +236,7 @@ export const updateGraph = (
             .attr('fill', (d) => d.color)
 
           g.append('a')
-            .attr(
-              'xlink:href',
-              (d) => `https://debank.com/profile/${d.address}`
-            )
+            .attr('xlink:href', (d) => `${DEBANK_URL}${d.address}`)
             .attr('target', 'blank')
             .append('text')
             .attr('dy', '.3em')
@@ -249,7 +254,9 @@ export const updateGraph = (
         },
         (update) => {
           update.select('circle').attr('fill', (d) => d.color)
-
+          update
+            .select('a')
+            .attr('xlink:href', (d) => `${DEBANK_URL}${d.address}`)
           update
             .select('text')
             .attr('fill', (d) => d.textColor)
