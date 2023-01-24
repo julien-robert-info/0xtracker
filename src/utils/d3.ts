@@ -6,7 +6,6 @@ export type Node = {
   address: string
   name?: string
   color: string
-  textColor: string
 }
 
 export type Link = {

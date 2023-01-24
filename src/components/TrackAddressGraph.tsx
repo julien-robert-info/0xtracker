@@ -15,14 +15,12 @@ const TrackAddressGraph: React.FC<{
   names: Names
 }> = ({ transferList, names }) => {
   const didMount = React.useRef(false)
+  const theme = useTheme()
   const { svgRef, svgContainerRef, width, height } = useD3()
   const graphData: GraphData = React.useMemo(
     () => getDataFromTransferList(transferList, names),
     [transferList, names]
   )
-
-  // Needed for svg backgroundColor
-  const theme = useTheme()
 
   // init graph on 1st render then update graph on graphData update
   React.useEffect(() => {
@@ -32,9 +30,16 @@ const TrackAddressGraph: React.FC<{
       return
     }
 
-    updateGraph(svgRef, graphData, width, height)
+    updateGraph(
+      svgRef,
+      graphData,
+      width,
+      height,
+      theme.palette.mode,
+      theme.palette.text.secondary
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graphData])
+  }, [graphData, theme])
 
   return (
     <div ref={svgContainerRef} style={{ maxHeight: '800px' }} role="graph">
