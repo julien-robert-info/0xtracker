@@ -19,10 +19,12 @@ describe('TrackAddressForm component', () => {
         isLoading={false}
       />
     )
-
     const addressInput = screen.getByRole('textbox', {
       name: /address/i
     })
+
+    fireEvent.focus(addressInput)
+
     const minToDigInput = screen.getByRole('textbox', {
       name: /Min transfers to dig/i
     })
@@ -73,6 +75,9 @@ describe('TrackAddressForm component', () => {
     const addressInput = screen.getByRole('textbox', {
       name: /address/i
     })
+
+    fireEvent.focus(addressInput)
+
     const minToDigInput = screen.getByRole('textbox', {
       name: /Min transfers to dig/i
     })

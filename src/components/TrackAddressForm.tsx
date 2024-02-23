@@ -12,11 +12,15 @@ import {
   FormControl,
   Input,
   Checkbox,
-  ListItemText
+  ListItemText,
+  ClickAwayListener,
+  Collapse,
+  useTheme,
+  useMediaQuery
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 
-interface TrackAddressFormProps {
+export interface TrackAddressFormProps {
   trackAddressFormValues: TrackAddressFormValues
   setTrackAddressFormValues: (
     trackAddressFormValues: TrackAddressFormValues
@@ -36,6 +40,9 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
   setTrackAddressFormValues,
   isLoading
 }) => {
+  const theme = useTheme()
+  const mobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const networks = Object.keys(chains).filter(
     (chainId) => chains[Number(chainId)].blockExplorerApiUrls
   )
@@ -51,6 +58,7 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
   const [maxNodes, setMaxNodes] = React.useState(
     trackAddressFormValues.maxNodes
   )
+  const [displayFullForm, setDisplayFullForm] = React.useState(false)
 
   const handleSelect = (event: SelectChangeEvent<string[]>) => {
     const {
@@ -61,6 +69,7 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    setDisplayFullForm(false)
     setTrackAddressFormValues({
       searchAddress: searchAddress,
       minToDig: minToDig,
@@ -70,81 +79,100 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
   }
 
   return (
-    <Box
-      component="form"
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-      sx={{
-        width: { md: '70%', sm: '100%' },
-        margin: 'auto',
-        mb: '3em'
-      }}
-    >
-      <Box sx={{ display: 'flex' }}>
-        <TextField
-          value={searchAddress}
-          onChange={(e) => setSearchAddress(e.target.value)}
-          sx={{ ml: 1, flex: 1 }}
-          label="Address"
-          variant="outlined"
-        />
-        <IconButton type="submit" sx={{ ml: 1, p: '10px' }} aria-label="search">
-          {isLoading ? (
-            <CircularProgress size={35} sx={{ color: 'primary.light' }} />
-          ) : (
-            <SearchIcon fontSize="large" sx={{ color: 'primary.light' }} />
-          )}
-        </IconButton>
-      </Box>
+    <ClickAwayListener onClickAway={() => setDisplayFullForm(false)}>
       <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
         sx={{
           display: 'flex',
           flexDirection: { md: 'row', sm: 'column', xs: 'column' },
-          mt: 1,
-          textAlign: 'right'
+          alignItems: 'center',
+          width: { sm: '70%' },
+          margin: 'auto',
+          padding: 1
         }}
       >
-        <FormControl variant="standard" sx={{ ml: 1, flex: 1 }} size="small">
-          <InputLabel id="network-select-label">Networks</InputLabel>
-          <Select
-            multiple
-            labelId="network-select-label"
-            input={<Input />}
-            value={selectedNetworks}
-            onChange={handleSelect}
-            renderValue={(selected) =>
-              selected.map((val) => chains[Number(val)].chainName).join(', ')
-            }
+        <FormControl
+          variant="standard"
+          sx={{ display: 'flex', flexDirection: 'row', flex: 2 }}
+          size="small"
+        >
+          <TextField
+            value={searchAddress}
+            onChange={(e) => setSearchAddress(e.target.value)}
+            onFocus={() => setDisplayFullForm(true)}
+            sx={{ ml: 1, flex: 1 }}
+            label="Address"
+            variant="outlined"
+          />
+          <IconButton
+            type="submit"
+            sx={{ ml: 1, p: '10px' }}
+            aria-label="search"
           >
-            {networks.map((chainId) => (
-              <MenuItem key={chainId} value={chainId}>
-                <Checkbox checked={selectedNetworks.indexOf(chainId) > -1} />
-                <ListItemText primary={chains[Number(chainId)].chainName} />
-              </MenuItem>
-            ))}
-          </Select>
+            {isLoading ? (
+              <CircularProgress size={35} sx={{ color: 'primary.light' }} />
+            ) : (
+              <SearchIcon fontSize="large" sx={{ color: 'primary.light' }} />
+            )}
+          </IconButton>
         </FormControl>
-        <TextField
-          value={minToDig}
-          onChange={(e) => setMinToDig(Number(e.target.value))}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-          sx={{ ml: 1, flex: 1 }}
-          label="Min transfers to dig"
-          variant="standard"
-          size="small"
-        />
-        <TextField
-          value={maxNodes}
-          onChange={(e) => setMaxNodes(Number(e.target.value))}
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-          sx={{ ml: 1, flex: 1 }}
-          label="Max nodes per chain"
-          variant="standard"
-          size="small"
-        />
+        <Collapse
+          in={displayFullForm}
+          orientation={mobile ? 'horizontal' : 'vertical'}
+        >
+          <FormControl variant="standard" sx={{ ml: 1, flex: 1 }} size="small">
+            <InputLabel id="network-select-label">Networks</InputLabel>
+            <Select
+              multiple
+              labelId="network-select-label"
+              input={<Input />}
+              value={selectedNetworks}
+              onChange={handleSelect}
+              renderValue={(selected) =>
+                selected.map((val) => chains[Number(val)].chainName).join(', ')
+              }
+            >
+              {networks.map((chainId) => (
+                <MenuItem key={chainId} value={chainId}>
+                  <Checkbox checked={selectedNetworks.indexOf(chainId) > -1} />
+                  <ListItemText primary={chains[Number(chainId)].chainName} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              mt: 1,
+              textAlign: 'right'
+            }}
+          >
+            <TextField
+              value={minToDig}
+              onChange={(e) => setMinToDig(Number(e.target.value))}
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              sx={{ ml: 1, flex: 1 }}
+              label="Min transfers to dig"
+              variant="standard"
+              size="small"
+            />
+            <TextField
+              value={maxNodes}
+              onChange={(e) => setMaxNodes(Number(e.target.value))}
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              sx={{ ml: 1, flex: 1 }}
+              label="Max nodes per chain"
+              variant="standard"
+              size="small"
+            />
+          </Box>
+        </Collapse>
       </Box>
-    </Box>
+    </ClickAwayListener>
   )
 }
 

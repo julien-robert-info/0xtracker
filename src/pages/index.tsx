@@ -1,22 +1,19 @@
 import React from 'react'
-import { Box, Tab, Tabs, Typography } from '@mui/material'
-import TrackAddressForm, {
-  TrackAddressFormValues
-} from 'components/TrackAddressForm'
+import { Box, Typography } from '@mui/material'
+import { TrackAddressFormValues } from 'components/TrackAddressForm'
 import { useTracker } from 'utils'
-import TrackAddressList from 'components/TrackAddressList'
 import TrackAddressGraph from 'components/TrackAddressGraph'
+import { Header } from 'components/Header'
 
 const Home = () => {
   const didMount = React.useRef(false)
   const [formValues, setFormValues] = React.useState<TrackAddressFormValues>({
-    searchAddress: '',
+    searchAddress: 'aavechan.eth',
     minToDig: 2,
-    maxNodes: 30,
-    selectedNetworks: ['1']
+    maxNodes: 20,
+    selectedNetworks: ['1', '137']
   })
   const { search, transferList, names, isLoading } = useTracker()
-  const [tabValue, setTabValue] = React.useState(1)
 
   // Launch new search on formvalues update
   React.useEffect(() => {
@@ -29,41 +26,19 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formValues])
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue)
-  }
-
   return (
     <>
-      <Box sx={{ width: '100%', textAlign: 'center', mt: '3em', mb: '3em' }}>
-        <TrackAddressForm
-          trackAddressFormValues={formValues}
-          setTrackAddressFormValues={setFormValues}
-          isLoading={isLoading}
-        />
+      <Header
+        trackAddressFormProps={{
+          trackAddressFormValues: formValues,
+          setTrackAddressFormValues: setFormValues,
+          isLoading: isLoading
+        }}
+      />
+      <Box sx={{ width: '100%', textAlign: 'center' }}>
         <Box role="main">
           {transferList.length > 0 ? (
-            <>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tabValue} onChange={handleTabChange} centered>
-                  <Tab label="List view" />
-                  <Tab label="Graph view" />
-                </Tabs>
-              </Box>
-              <div hidden={tabValue !== 0}>
-                {tabValue === 0 && (
-                  <TrackAddressList transferList={transferList} names={names} />
-                )}
-              </div>
-              <div hidden={tabValue !== 1}>
-                {tabValue === 1 && (
-                  <TrackAddressGraph
-                    transferList={transferList}
-                    names={names}
-                  />
-                )}
-              </div>
-            </>
+            <TrackAddressGraph transferList={transferList} names={names} />
           ) : (
             <>
               <Typography

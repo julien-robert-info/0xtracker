@@ -35,7 +35,12 @@ export const useD3 = () => {
   const getsvgContainerSize = () => {
     if (svgContainerRef.current) {
       setWidth(svgContainerRef.current.clientWidth)
-      setHeight(svgContainerRef.current.clientHeight)
+      //weird result between mobile and desktop
+      setHeight(
+        (window.innerHeight < window.outerHeight
+          ? window.innerHeight
+          : window.outerHeight) - svgContainerRef.current.offsetTop
+      )
     }
   }
 
