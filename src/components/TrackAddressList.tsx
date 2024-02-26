@@ -8,7 +8,13 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { chains } from 'data/networks'
-import { DEBANK_URL, Names, TransferList, uniqueAddressList } from 'utils'
+import {
+  DEBANK_URL,
+  Names,
+  TransferList,
+  formatAddress,
+  uniqueAddressList
+} from 'utils'
 
 const TrackAddressList: React.FC<{
   transferList: TransferList
@@ -92,12 +98,17 @@ const TrackAddressList: React.FC<{
                     underline="hover"
                     sx={{ color: 'text.secondary' }}
                   >
-                    {names.findIndex((i) => i.address === address.address) !==
-                    -1
-                      ? names[
-                          names.findIndex((i) => i.address === address.address)
-                        ].name
-                      : address.address}
+                    {formatAddress(
+                      names.findIndex((i) => i.address === address.address) !==
+                        -1
+                        ? names[
+                            names.findIndex(
+                              (i) => i.address === address.address
+                            )
+                          ].name
+                        : address.address,
+                      20
+                    )}
                   </Link>
                   <Typography sx={{ ml: 1 }}>
                     ({address.transfers.length})
@@ -119,15 +130,18 @@ const TrackAddressList: React.FC<{
                           underline="hover"
                           sx={{ color: 'text.secondary' }}
                         >
-                          {names.findIndex(
-                            (i) => i.address === txList.address
-                          ) !== -1
-                            ? names[
-                                names.findIndex(
-                                  (i) => i.address === txList.address
-                                )
-                              ].name
-                            : txList.address}
+                          {formatAddress(
+                            names.findIndex(
+                              (i) => i.address === txList.address
+                            ) !== -1
+                              ? names[
+                                  names.findIndex(
+                                    (i) => i.address === txList.address
+                                  )
+                                ].name
+                              : txList.address,
+                            20
+                          )}
                         </Link>
                         <Typography sx={{ ml: 1 }}>
                           ({txList.hashs.length})
@@ -142,7 +156,7 @@ const TrackAddressList: React.FC<{
                             underline="hover"
                             sx={{ display: 'block', color: 'text.secondary' }}
                           >
-                            {`${tx}`}
+                            {`${formatAddress(tx, 30)}`}
                           </Link>
                         ))}
                       </AccordionDetails>

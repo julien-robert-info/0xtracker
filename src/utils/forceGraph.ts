@@ -3,6 +3,7 @@ import { SimulationNodeDatum } from 'd3'
 import {
   Datum,
   DEBANK_URL,
+  formatAddress,
   GraphData,
   Link,
   Names,
@@ -194,7 +195,7 @@ export const updateGraph = (
           .id((d: SimulationNodeDatum) => (d as Node).id)
       )
       .force('charge', d3.forceManyBody().strength(-5))
-      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('center', d3.forceCenter(width / 2, height / 2).strength(0.5))
       .force('collide', d3.forceCollide().radius(nodeRadius + 10))
       .on('tick', () => {
         link
@@ -242,11 +243,7 @@ export const updateGraph = (
             .attr('font-size', fontSize)
             .attr('font-weight', 'bold')
             .style('text-anchor', 'middle')
-            .text((d) =>
-              d.name
-                ? d.name
-                : `0x...${d.address.substring(d.address.length - 4)}`
-            )
+            .text((d) => (d.name ? d.name : `${formatAddress(d.address, 8)}`))
 
           g.on('mouseover', (e) => {
             d3.select(e.currentTarget)
@@ -276,11 +273,7 @@ export const updateGraph = (
           update
             .select('text')
             .attr('fill', textColor)
-            .text((d) =>
-              d.name
-                ? d.name
-                : `0x...${d.address.substring(d.address.length - 4)}`
-            )
+            .text((d) => (d.name ? d.name : `${formatAddress(d.address, 8)}`))
 
           update
             .on('mouseover', (e) => {

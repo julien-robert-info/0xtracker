@@ -117,3 +117,16 @@ export const uniqueAddressList = (transferList: TransferList) => {
     ])
   ]
 }
+
+export const formatAddress = (address: string, length: number) => {
+  if (address.length <= length) {
+    return address
+  }
+  const midLength = length / 2
+
+  return (
+    address.substring(0, midLength) +
+    '...' +
+    address.substring(address.length - midLength, address.length)
+  )
+}
