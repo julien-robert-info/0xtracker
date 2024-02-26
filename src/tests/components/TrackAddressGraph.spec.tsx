@@ -54,7 +54,7 @@ describe('TrackAddressGraph component', () => {
     ]
     rerender(<TrackAddressGraph transferList={transferList} names={names} />)
 
-    const name = screen.findByText('vitalik.eth')
+    const name = screen.findByText('vitalik.eth', { selector: 'text' })
 
     expect(await name).toBeInTheDocument()
   })

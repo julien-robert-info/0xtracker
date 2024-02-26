@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Link,
   Typography
 } from '@mui/material'
@@ -73,13 +74,13 @@ const TrackAddressList: React.FC<{
   })
 
   return (
-    <>
+    <Box fontSize={'caption.fontSize'} maxWidth={300}>
       {tree.map((addresses, chainId) => (
-        <Accordion key={chainId}>
+        <Accordion key={chainId} defaultExpanded>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls="panel1-content"
+            id="panel1-header"
           >
             {chains[chainId].chainName}
             <Typography sx={{ ml: 1 }}>({addresses.length})</Typography>
@@ -89,8 +90,8 @@ const TrackAddressList: React.FC<{
               <Accordion key={`${chainId}-${address.address}`}>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
+                  aria-controls="panel2-content"
+                  id="panel2-header"
                 >
                   <Link
                     href={`${DEBANK_URL}${address.address}`}
@@ -121,8 +122,8 @@ const TrackAddressList: React.FC<{
                     >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
+                        aria-controls="panel3-content"
+                        id="panel3-header"
                       >
                         <Link
                           href={`${DEBANK_URL}${txList.address}`}
@@ -154,7 +155,10 @@ const TrackAddressList: React.FC<{
                             href={`${chains[chainId].blockExplorerUrls}tx/${tx}`}
                             target="blank"
                             underline="hover"
-                            sx={{ display: 'block', color: 'text.secondary' }}
+                            sx={{
+                              display: 'block',
+                              color: 'text.secondary'
+                            }}
                           >
                             {`${formatAddress(tx, 30)}`}
                           </Link>
@@ -168,7 +172,7 @@ const TrackAddressList: React.FC<{
           </AccordionDetails>
         </Accordion>
       ))}
-    </>
+    </Box>
   )
 }
 

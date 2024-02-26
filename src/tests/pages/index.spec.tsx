@@ -23,7 +23,7 @@ describe('HomePage', () => {
     expect(searchButton).toBeInTheDocument()
   })
 
-  it('switch display to tabs on search result', async () => {
+  it('switch display to graph on search result', async () => {
     fetch.mockResponse(blockExplorerApiResponse)
     render(<Home />)
 

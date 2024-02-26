@@ -33,7 +33,7 @@ describe('TrackAddresslist component', () => {
 
     expect(
       await screen.findByRole('button', {
-        name: /0x000000000000000000000000000000000000dead/i
+        name: /0x00000000...000000dead/i
       })
     ).toBeInTheDocument()
   })
