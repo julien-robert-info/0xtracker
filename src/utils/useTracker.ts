@@ -3,8 +3,9 @@ import { TrackAddressFormValues } from 'components/TrackAddressForm'
 import { ethers } from 'ethers'
 import { useWeb3React } from '@web3-react/core'
 import {
-  getTransfersFromtxList,
-  getTxListFromAddress,
+  getErc20EventsFromAddress,
+  getTransfersFromErc20Events,
+  isContract,
   TransferList,
   uniqueAddressList,
   useEnsNames
@@ -85,16 +86,15 @@ export const useTracker = () => {
     const RecursiveSearch = async (newSearch: Search) => {
       //get transfers from search address
       fetchList.current.push(newSearch)
-      const txList = await getTxListFromAddress(
-        newSearch.address,
-        newSearch.chainId,
-        setIsFetching
-      )
-      const transfers = getTransfersFromtxList(
-        newSearch.chainId,
-        newSearch.address,
-        txList
-      )
+        const erc20List = await getErc20EventsFromAddress(
+          newSearch.address,
+          newSearch.chainId,
+          setIsFetching
+        )
+        const transfers = getTransfersFromErc20Events(
+          newSearch.chainId,
+          erc20List
+        )
 
       let addSearch = false
       //add transfers to transferList depending on missingNodes
