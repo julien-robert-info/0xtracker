@@ -1,3 +1,4 @@
+import { TrackList } from 'components/TrackAddressList'
 import * as d3 from 'd3'
 import { SimulationNodeDatum } from 'd3'
 import {
@@ -8,7 +9,8 @@ import {
   Link,
   Names,
   Node,
-  TransferList
+  TransferList,
+  uniqueAddressList
 } from 'utils'
 
 type graphColors = {
@@ -47,40 +49,34 @@ export const getDataFromTransferList = (
 ) => {
   let nodes: Node[] = []
   let links: Link[] = []
+  let list: TrackList = []
 
-  //get nodes
-  transferList.map((transfer) => {
-    if (
-      nodes.findIndex(
-        (i) => i.id === `${transfer.chainId}-${transfer.source}`
-      ) === -1
-    ) {
-      nodes.push({
-        id: `${transfer.chainId}-${transfer.source}`,
-        chain: transfer.chainId,
-        address: transfer.source,
-        name: names[names.findIndex((i) => i.address === transfer.source)]
-          ?.name,
-        color:
-          colors[colors.findIndex((i) => i.chainId === transfer.chainId)].node
+  const trackChains = [...new Set(transferList.map((item) => item.chainId))]
+  // Lvl 1 Networks
+  trackChains.map((chainId) => {
+    list[chainId] = []
+    const addresses = uniqueAddressList(
+      transferList.filter((i) => i.chainId === chainId)
+    ).filter((a) => a != '0x0000000000000000000000000000000000000000')
+    // Lvl 2 Addresses
+    addresses.map((address) => {
+      // Lvl 3 Transfers
+      list[chainId].push({
+        address: address,
+        transfers: transferList.filter(
+          (i) =>
+            i.chainId === chainId && (i.from === address || i.to === address)
+        )
       })
-    }
 
-    if (
-      nodes.findIndex(
-        (i) => i.id === `${transfer.chainId}-${transfer.target}`
-      ) === -1
-    ) {
       nodes.push({
-        id: `${transfer.chainId}-${transfer.target}`,
-        chain: transfer.chainId,
-        address: transfer.target,
-        name: names[names.findIndex((i) => i.address === transfer.target)]
-          ?.name,
-        color:
-          colors[colors.findIndex((i) => i.chainId === transfer.chainId)].node
+        id: `${chainId}-${address}`,
+        chain: chainId,
+        address: address,
+        name: names[names.findIndex((i) => i.address === address)]?.name,
+        color: colors[colors.findIndex((i) => i.chainId === chainId)].node
       })
-    }
+    })
   })
 
   //get links
@@ -93,10 +89,8 @@ export const getDataFromTransferList = (
         const linkValue = transferList.filter(
           (i) =>
             i.chainId === sourceNode.chain &&
-            ((i.source === sourceNode.address &&
-              i.target === targetNode.address) ||
-              (i.source === targetNode.address &&
-                i.target === sourceNode.address))
+            ((i.from === sourceNode.address && i.to === targetNode.address) ||
+              (i.from === targetNode.address && i.to === sourceNode.address))
         ).length
 
         if (
@@ -118,7 +112,7 @@ export const getDataFromTransferList = (
 
   const graphData: GraphData = { nodes: nodes, links: links }
 
-  return graphData
+  return { graph: graphData, list: list }
 }
 
 export const initGraph = (svgRef: React.MutableRefObject<null>) => {

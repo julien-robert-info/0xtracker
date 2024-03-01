@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material/styles'
 import { Button, Collapse, IconButton, Paper } from '@mui/material'
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
 import ListIcon from '@mui/icons-material/List'
-import TrackAddressList from './TrackAddressList'
+import TrackAddressList, { TrackList } from './TrackAddressList'
 
 const TrackAddressGraph: React.FC<{
   transferList: TransferList
@@ -21,7 +21,7 @@ const TrackAddressGraph: React.FC<{
   const didMount = React.useRef(false)
   const theme = useTheme()
   const { svgRef, svgContainerRef, width, height } = useD3()
-  const graphData: GraphData = React.useMemo(
+  const data: { graph: GraphData; list: TrackList } = React.useMemo(
     () => getDataFromTransferList(transferList, names),
     [transferList, names]
   )
@@ -37,14 +37,14 @@ const TrackAddressGraph: React.FC<{
 
     updateGraph(
       svgRef,
-      graphData,
+      data.graph,
       width,
       height,
       theme.palette.mode,
       theme.palette.text.secondary
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [graphData, theme])
+  }, [data, theme])
 
   return (
     <div
@@ -97,7 +97,7 @@ const TrackAddressGraph: React.FC<{
               sx={{ color: 'primary.light' }}
             />
           </IconButton>
-          <TrackAddressList transferList={transferList} names={names} />
+          <TrackAddressList list={data.list} names={names} />
         </Paper>
       </Collapse>
     </div>

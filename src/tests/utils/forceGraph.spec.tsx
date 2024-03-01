@@ -8,7 +8,9 @@ describe('forceGraph helper getDataFromTransferList', () => {
 
     const data = getDataFromTransferList(transferList, names)
 
-    expect(data.nodes).toHaveLength(5)
-    expect(data.links).toHaveLength(4)
+    expect(data.graph.nodes).toHaveLength(5)
+    expect(data.graph.links).toHaveLength(4)
+    expect(data.list).toHaveLength(138)
+    expect(data.list[137]).toHaveLength(5)
   })
 })

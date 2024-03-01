@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import TrackAddressList from 'components/TrackAddressList'
+import TrackAddressList, { TrackList } from 'components/TrackAddressList'
 import { mockedTransferList } from 'tests/__mocks__/TrackAddressList'
-import { Names, TransferList } from 'utils'
+import { Names, TransferList, getDataFromTransferList } from 'utils'
 
 describe('TrackAddresslist component', () => {
   it('render nothing if transferList empty', () => {
-    const transferList: TransferList = []
+    const transferList: TrackList = []
     const names: Names = []
 
-    render(<TrackAddressList transferList={transferList} names={names} />)
+    render(<TrackAddressList list={transferList} names={names} />)
 
     const accordionMenu = screen.queryByRole('button', {
       name: /Polygon/i
@@ -21,7 +21,9 @@ describe('TrackAddresslist component', () => {
     const transferList: TransferList = mockedTransferList
     const names: Names = []
 
-    render(<TrackAddressList transferList={transferList} names={names} />)
+    const data = getDataFromTransferList(transferList, names)
+
+    render(<TrackAddressList list={data.list} names={names} />)
 
     const accordionMenu = screen.findByRole('button', {
       name: /Polygon/i
@@ -47,7 +49,9 @@ describe('TrackAddresslist component', () => {
       }
     ]
 
-    render(<TrackAddressList transferList={transferList} names={names} />)
+    const data = getDataFromTransferList(transferList, names)
+
+    render(<TrackAddressList list={data.list} names={names} />)
 
     const accordionMenu = screen.findByRole('button', {
       name: /Polygon/i

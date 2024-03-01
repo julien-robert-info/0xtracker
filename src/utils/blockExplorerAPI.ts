@@ -3,21 +3,12 @@ export const DEBANK_URL = 'https://debank.com/profile/'
 export type TransferList = Array<{
   chainId: number
   blockNumber: string
-  source: string
-  target: string
-  value?: number
-  tokenSymbol?: string
+  from: string
+  to: string
+  value: number
+  tokenSymbol: string
   hash: string
 }>
-
-// interface Tx {
-//   blockNumber: string
-//   hash: string
-//   from: string
-//   to: string
-//   input: string
-//   functionName: string
-// }
 
 interface Transfer {
   blockNumber: string
@@ -27,6 +18,15 @@ interface Transfer {
   value: number
   tokenSymbol: string
 }
+
+// interface Tx {
+//   blockNumber: string
+//   hash: string
+//   from: string
+//   to: string
+//   input: string
+//   functionName: string
+// }
 
 // Retrieve erc20 event list for a given address from blockExplorer API behind API route
 export const getErc20EventsFromAddress = async (
@@ -60,6 +60,28 @@ export const getErc20EventsFromAddress = async (
   setIsFetching(false)
 
   return transferList
+}
+
+// Extract transfers from erc20 event list
+export const getTransfersFromErc20Events = (
+  chainId: number,
+  eventList: Transfer[]
+) => {
+  let transfers: TransferList = []
+
+  eventList.map((transfer: Transfer) => {
+    transfers.push({
+      chainId: chainId,
+      blockNumber: transfer.blockNumber,
+      from: transfer.from,
+      to: transfer.to,
+      hash: transfer.hash,
+      value: transfer.value,
+      tokenSymbol: transfer.tokenSymbol
+    })
+  })
+
+  return transfers
 }
 
 // // Retrieve tx list for a given address from blockExplorer API behind API route
@@ -113,8 +135,8 @@ export const getErc20EventsFromAddress = async (
 //           {
 //             chainId: chainId,
 //             blockNumber: tx.blockNumber,
-//             source: tx.from,
-//             target: address.toLowerCase(),
+//             from: tx.from,
+//             to: address.toLowerCase(),
 //             hash: tx.hash
 //           }
 //         ]
@@ -128,8 +150,8 @@ export const getErc20EventsFromAddress = async (
 //           {
 //             chainId: chainId,
 //             blockNumber: tx.blockNumber,
-//             source: address.toLowerCase(),
-//             target: tx.to,
+//             from: address.toLowerCase(),
+//             to: tx.to,
 //             hash: tx.hash
 //           }
 //         ]
@@ -145,8 +167,8 @@ export const getErc20EventsFromAddress = async (
 //           {
 //             chainId: chainId,
 //             blockNumber: tx.blockNumber,
-//             source: address.toLowerCase(),
-//             target: decodedInput[0].toLowerCase(),
+//             from: address.toLowerCase(),
+//             to: decodedInput[0].toLowerCase(),
 //             hash: tx.hash
 //           }
 //         ]
@@ -181,8 +203,8 @@ export const getTransfersFromErc20Events = (
 export const uniqueAddressList = (transferList: TransferList) => {
   return [
     ...new Set([
-      ...transferList.map((item) => item.source),
-      ...transferList.map((item) => item.target)
+      ...transferList.map((item) => item.from),
+      ...transferList.map((item) => item.to)
     ])
   ]
 }

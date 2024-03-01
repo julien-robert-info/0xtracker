@@ -2,7 +2,7 @@ import { LRUCache } from 'lru-cache'
 import { makeApiCallQueued } from './apiQueue'
 
 const options = {
-  max: 500,
+  max: 250,
   ttl: 1000 * 60 * 15
 }
 const cache = new LRUCache(options)
