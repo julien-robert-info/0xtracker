@@ -25,12 +25,19 @@ export type TrackList = Array<
   }>
 >
 
-const TrackAddressList: React.FC<{
+interface TrackAddressListProps {
   list: TrackList
   names: Names
-}> = ({ list, names }) => {
-  const [selected, setSelected] = React.useState<String | null>(null)
+  selected: string | null
+  setSelected: (selected: string | null) => void
+}
 
+const TrackAddressList: React.FC<TrackAddressListProps> = ({
+  list,
+  names,
+  selected,
+  setSelected
+}) => {
   return (
     <Box maxWidth={300}>
       {list.map((addresses, chainId) => (
@@ -53,6 +60,7 @@ const TrackAddressList: React.FC<{
                     <ListItemButton
                       alignItems="flex-start"
                       selected={selected === `${chainId}-${address.address}`}
+                      autoFocus={selected === `${chainId}-${address.address}`}
                       onClick={() =>
                         selected !== `${chainId}-${address.address}`
                           ? setSelected(`${chainId}-${address.address}`)

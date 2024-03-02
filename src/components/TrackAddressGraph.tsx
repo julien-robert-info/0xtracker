@@ -4,6 +4,7 @@ import {
   GraphData,
   initGraph,
   Names,
+  setNodeSelected,
   TransferList,
   updateGraph,
   useD3
@@ -26,6 +27,7 @@ const TrackAddressGraph: React.FC<{
     [transferList, names]
   )
   const [displayList, setDisplayList] = React.useState(true)
+  const [selected, setSelected] = React.useState<string | null>(null)
 
   // init graph on 1st render then update graph on graphData update
   React.useEffect(() => {
@@ -38,6 +40,7 @@ const TrackAddressGraph: React.FC<{
     updateGraph(
       svgRef,
       data.graph,
+      setSelected,
       width,
       height,
       theme.palette.mode,
@@ -45,6 +48,11 @@ const TrackAddressGraph: React.FC<{
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, theme])
+
+  React.useEffect(() => {
+    setNodeSelected(svgRef, selected, theme.palette.text.secondary)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected])
 
   return (
     <div
@@ -97,7 +105,12 @@ const TrackAddressGraph: React.FC<{
               sx={{ color: 'primary.light' }}
             />
           </IconButton>
-          <TrackAddressList list={data.list} names={names} />
+          <TrackAddressList
+            list={data.list}
+            names={names}
+            selected={selected}
+            setSelected={setSelected}
+          />
         </Paper>
       </Collapse>
     </div>
