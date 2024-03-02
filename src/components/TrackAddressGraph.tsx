@@ -2,6 +2,7 @@ import React from 'react'
 import {
   getDataFromTransferList,
   GraphData,
+  hideNodes,
   initGraph,
   Names,
   setNodeSelected,
@@ -22,12 +23,13 @@ const TrackAddressGraph: React.FC<{
   const didMount = React.useRef(false)
   const theme = useTheme()
   const { svgRef, svgContainerRef, width, height } = useD3()
-  const data: { graph: GraphData; list: TrackList } = React.useMemo(
-    () => getDataFromTransferList(transferList, names),
-    [transferList, names]
-  )
   const [displayList, setDisplayList] = React.useState(true)
   const [selected, setSelected] = React.useState<string | null>(null)
+  const [hiddenNodes, setHiddenNodes] = React.useState<string[]>([])
+  const data: { graph: GraphData; list: TrackList } = React.useMemo(
+    () => getDataFromTransferList(transferList, names, hiddenNodes),
+    [transferList, names, hiddenNodes]
+  )
 
   // init graph on 1st render then update graph on graphData update
   React.useEffect(() => {
@@ -46,6 +48,7 @@ const TrackAddressGraph: React.FC<{
       theme.palette.mode,
       theme.palette.text.secondary
     )
+    setNodeSelected(svgRef, selected, theme.palette.text.secondary)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, theme])
 
@@ -110,6 +113,8 @@ const TrackAddressGraph: React.FC<{
             names={names}
             selected={selected}
             setSelected={setSelected}
+            hiddenNodes={hiddenNodes}
+            setHiddenNodes={setHiddenNodes}
           />
         </Paper>
       </Collapse>

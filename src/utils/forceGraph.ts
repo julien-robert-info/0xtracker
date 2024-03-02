@@ -44,7 +44,8 @@ const labelWidth = 40
 
 export const getDataFromTransferList = (
   transferList: TransferList,
-  names: Names
+  names: Names,
+  hiddenNodes: string[]
 ) => {
   let nodes: Node[] = []
   let links: Link[] = []
@@ -68,13 +69,15 @@ export const getDataFromTransferList = (
         )
       })
 
-      nodes.push({
-        id: `${chainId}-${address}`,
-        chain: chainId,
-        address: address,
-        name: names[names.findIndex((i) => i.address === address)]?.name,
-        color: colors[colors.findIndex((i) => i.chainId === chainId)].node
-      })
+      if (hiddenNodes.findIndex((n) => n === `${chainId}-${address}`) === -1) {
+        nodes.push({
+          id: `${chainId}-${address}`,
+          chain: chainId,
+          address: address,
+          name: names[names.findIndex((i) => i.address === address)]?.name,
+          color: colors[colors.findIndex((i) => i.chainId === chainId)].node
+        })
+      }
     })
   })
 
@@ -299,6 +302,33 @@ export const setNodeSelected = (
   }
 }
 
+export const hideNodes = (
+  svgRef: React.MutableRefObject<null>,
+  nodes: string[]
+) => {
+  if (!svgRef.current) {
+    return
+  }
+
+  const svg = d3.select<SVGSVGElement, unknown>(svgRef.current)
+  svg
+    .select('.nodes')
+    .selectAll('g')
+    .attr('position', 'relative')
+    .attr('visibility', 'visible')
+
+  if (nodes.length > 0) {
+    svg
+      .select('.nodes')
+      .selectAll('g')
+      .select(function (d: any) {
+        return nodes.findIndex((n) => d.id === n) !== -1 ? this : null
+      })
+      .attr('position', 'absolute')
+      .attr('visibility', 'hidden')
+  }
+}
+
 const updateLinkLegend = (
   selection: d3.Selection<d3.BaseType, unknown, HTMLElement, any>,
   linkColors: d3.ScaleSequential<string, never>
@@ -394,7 +424,7 @@ const getSimulation = (
         .id((d: SimulationNodeDatum) => (d as Node).id)
     )
     .force('charge', d3.forceManyBody().strength(-5))
-    .force('center', d3.forceCenter(width / 2, height / 2).strength(0.5))
+    .force('center', d3.forceCenter(width / 2, height / 2))
     .force(
       'collide',
       d3

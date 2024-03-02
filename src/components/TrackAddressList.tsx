@@ -6,6 +6,7 @@ import {
   AccordionSummary,
   Box,
   Collapse,
+  IconButton,
   Link,
   List,
   ListItem,
@@ -15,6 +16,8 @@ import {
   Typography
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import { chains } from 'data/networks'
 import { DEBANK_URL, Names, TransferList, formatAddress } from 'utils'
 
@@ -30,13 +33,17 @@ interface TrackAddressListProps {
   names: Names
   selected: string | null
   setSelected: (selected: string | null) => void
+  hiddenNodes: string[]
+  setHiddenNodes: (nodes: string[]) => void
 }
 
 const TrackAddressList: React.FC<TrackAddressListProps> = ({
   list,
   names,
   selected,
-  setSelected
+  setSelected,
+  hiddenNodes,
+  setHiddenNodes
 }) => {
   return (
     <Box maxWidth={300}>
@@ -66,6 +73,14 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                           ? setSelected(`${chainId}-${address.address}`)
                           : setSelected(null)
                       }
+                      sx={{
+                        opacity:
+                          hiddenNodes.findIndex(
+                            (n) => n === `${chainId}-${address.address}`
+                          ) !== -1
+                            ? 0.4
+                            : 1
+                      }}
                     >
                       <ListItemText
                         primary={`${formatAddress(
@@ -90,6 +105,37 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                     </ListItemButton>
                     <Collapse in={selected === `${chainId}-${address.address}`}>
                       <Paper elevation={9}>
+                        {hiddenNodes.findIndex(
+                          (node) => node === `${chainId}-${address.address}`
+                        ) !== -1 ? (
+                          <IconButton
+                            aria-label="show"
+                            size="small"
+                            onClick={() =>
+                              setHiddenNodes(
+                                hiddenNodes.filter(
+                                  (node) =>
+                                    node !== `${chainId}-${address.address}`
+                                )
+                              )
+                            }
+                          >
+                            <VisibilityIcon fontSize="inherit" />
+                          </IconButton>
+                        ) : (
+                          <IconButton
+                            aria-label="hide"
+                            size="small"
+                            onClick={() =>
+                              setHiddenNodes([
+                                ...hiddenNodes,
+                                `${chainId}-${address.address}`
+                              ])
+                            }
+                          >
+                            <VisibilityOffIcon fontSize="inherit" />
+                          </IconButton>
+                        )}
                         <Link
                           href={`${DEBANK_URL}${address.address}`}
                           target="blank"

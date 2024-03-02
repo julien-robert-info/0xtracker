@@ -6,7 +6,7 @@ describe('forceGraph helper getDataFromTransferList', () => {
     const transferList: TransferList = mockedTransferList
     const names: Names = []
 
-    const data = getDataFromTransferList(transferList, names)
+    const data = getDataFromTransferList(transferList, names, [])
 
     expect(data.graph.nodes).toHaveLength(5)
     expect(data.graph.links).toHaveLength(4)

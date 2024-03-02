@@ -7,8 +7,19 @@ describe('TrackAddresslist component', () => {
   it('render nothing if transferList empty', () => {
     const transferList: TrackList = []
     const names: Names = []
+    const setSelected = jest.fn()
+    const setHiddenNodes = jest.fn()
 
-    render(<TrackAddressList list={transferList} names={names} />)
+    render(
+      <TrackAddressList
+        list={transferList}
+        names={names}
+        selected={null}
+        setSelected={setSelected}
+        hiddenNodes={[]}
+        setHiddenNodes={setHiddenNodes}
+      />
+    )
 
     const accordionMenu = screen.queryByRole('button', {
       name: /Polygon/i
@@ -20,10 +31,21 @@ describe('TrackAddresslist component', () => {
   it('render accordion menu', async () => {
     const transferList: TransferList = mockedTransferList
     const names: Names = []
+    const setSelected = jest.fn()
+    const setHiddenNodes = jest.fn()
 
-    const data = getDataFromTransferList(transferList, names)
+    const data = getDataFromTransferList(transferList, names, [])
 
-    render(<TrackAddressList list={data.list} names={names} />)
+    render(
+      <TrackAddressList
+        list={data.list}
+        names={names}
+        selected={null}
+        setSelected={setSelected}
+        hiddenNodes={[]}
+        setHiddenNodes={setHiddenNodes}
+      />
+    )
 
     const accordionMenu = screen.findByRole('button', {
       name: /Polygon/i
@@ -48,10 +70,21 @@ describe('TrackAddresslist component', () => {
         name: 'vitalik.eth'
       }
     ]
+    const setSelected = jest.fn()
+    const setHiddenNodes = jest.fn()
 
-    const data = getDataFromTransferList(transferList, names)
+    const data = getDataFromTransferList(transferList, names, [])
 
-    render(<TrackAddressList list={data.list} names={names} />)
+    render(
+      <TrackAddressList
+        list={data.list}
+        names={names}
+        selected={null}
+        setSelected={setSelected}
+        hiddenNodes={[]}
+        setHiddenNodes={setHiddenNodes}
+      />
+    )
 
     const accordionMenu = screen.findByRole('button', {
       name: /Polygon/i
