@@ -9,15 +9,18 @@ describe('TrackAddresslist component', () => {
     const names: Names = []
     const setSelected = jest.fn()
     const setHiddenNodes = jest.fn()
+    const addSearch = jest.fn()
 
     render(
       <TrackAddressList
         list={transferList}
         names={names}
+        fetchList={{ current: [] }}
         selected={null}
         setSelected={setSelected}
         hiddenNodes={[]}
         setHiddenNodes={setHiddenNodes}
+        addSearch={addSearch}
       />
     )
 
@@ -33,6 +36,7 @@ describe('TrackAddresslist component', () => {
     const names: Names = []
     const setSelected = jest.fn()
     const setHiddenNodes = jest.fn()
+    const addSearch = jest.fn()
 
     const data = getDataFromTransferList(transferList, names, [])
 
@@ -40,10 +44,12 @@ describe('TrackAddresslist component', () => {
       <TrackAddressList
         list={data.list}
         names={names}
+        fetchList={{ current: [] }}
         selected={null}
         setSelected={setSelected}
         hiddenNodes={[]}
         setHiddenNodes={setHiddenNodes}
+        addSearch={addSearch}
       />
     )
 
@@ -72,6 +78,7 @@ describe('TrackAddresslist component', () => {
     ]
     const setSelected = jest.fn()
     const setHiddenNodes = jest.fn()
+    const addSearch = jest.fn()
 
     const data = getDataFromTransferList(transferList, names, [])
 
@@ -79,10 +86,12 @@ describe('TrackAddresslist component', () => {
       <TrackAddressList
         list={data.list}
         names={names}
+        fetchList={{ current: [] }}
         selected={null}
         setSelected={setSelected}
         hiddenNodes={[]}
         setHiddenNodes={setHiddenNodes}
+        addSearch={addSearch}
       />
     )
 

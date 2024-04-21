@@ -2,9 +2,9 @@ import React from 'react'
 import {
   getDataFromTransferList,
   GraphData,
-  hideNodes,
   initGraph,
   Names,
+  Search,
   setNodeSelected,
   TransferList,
   updateGraph,
@@ -19,7 +19,9 @@ import TrackAddressList, { TrackList } from './TrackAddressList'
 const TrackAddressGraph: React.FC<{
   transferList: TransferList
   names: Names
-}> = ({ transferList, names }) => {
+  fetchList: React.MutableRefObject<Search[]>
+  addSearch: (search: Search) => void
+}> = ({ transferList, names, fetchList, addSearch }) => {
   const didMount = React.useRef(false)
   const theme = useTheme()
   const { svgRef, svgContainerRef, width, height } = useD3()
@@ -115,6 +117,8 @@ const TrackAddressGraph: React.FC<{
             setSelected={setSelected}
             hiddenNodes={hiddenNodes}
             setHiddenNodes={setHiddenNodes}
+            fetchList={fetchList}
+            addSearch={addSearch}
           />
         </Paper>
       </Collapse>

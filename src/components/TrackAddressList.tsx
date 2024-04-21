@@ -18,8 +18,9 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import DownloadIcon from '@mui/icons-material/Download'
 import { chains } from 'data/networks'
-import { DEBANK_URL, Names, TransferList, formatAddress } from 'utils'
+import { DEBANK_URL, Names, Search, TransferList, formatAddress } from 'utils'
 
 export type TrackList = Array<
   Array<{
@@ -31,19 +32,23 @@ export type TrackList = Array<
 interface TrackAddressListProps {
   list: TrackList
   names: Names
+  fetchList: React.MutableRefObject<Search[]>
   selected: string | null
   setSelected: (selected: string | null) => void
   hiddenNodes: string[]
   setHiddenNodes: (nodes: string[]) => void
+  addSearch: (search: Search) => void
 }
 
 const TrackAddressList: React.FC<TrackAddressListProps> = ({
   list,
   names,
+  fetchList,
   selected,
   setSelected,
   hiddenNodes,
-  setHiddenNodes
+  setHiddenNodes,
+  addSearch
 }) => {
   return (
     <Box maxWidth={300}>
@@ -105,6 +110,28 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                     </ListItemButton>
                     <Collapse in={selected === `${chainId}-${address.address}`}>
                       <Paper elevation={9}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <Box sx={{ flex: 1 }}>
+                            <IconButton
+                              aria-label="retrive"
+                              size="small"
+                              disabled={
+                                fetchList.current.findIndex(
+                                  (search) =>
+                                    search.chainId === chainId &&
+                                    search.address === address.address
+                                ) !== -1
+                              }
+                              onClick={() =>
+                                addSearch({
+                                  chainId: chainId,
+                                  address: address.address
+                                })
+                              }
+                            >
+                              <DownloadIcon fontSize="inherit" />
+                            </IconButton>
+                          </Box>
                           <Box sx={{ flex: 1 }}>
                             {hiddenNodes.findIndex(
                               (node) => node === `${chainId}-${address.address}`
@@ -146,6 +173,7 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                           >
                             Debank
                           </Link>
+                        </Box>
                         <List>
                           {address.transfers
                             .sort(

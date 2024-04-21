@@ -8,10 +8,11 @@ import { Header } from 'components/Header'
 const Home = () => {
   const didMount = React.useRef(false)
   const [formValues, setFormValues] = React.useState<TrackAddressFormValues>({
-    searchAddress: 'aavechan.eth',
+    searchAddress: '0x0aC6368dfdDC12AF70455d63f83d1E9BE76E4c85',
     selectedNetworks: ['1', '137']
   })
-  const { search, transferList, names, isLoading } = useTracker()
+  const { search, addSearch, transferList, fetchList, names, isLoading } =
+    useTracker()
 
   // Launch new search on formvalues update
   React.useEffect(() => {
@@ -36,7 +37,12 @@ const Home = () => {
       <Box sx={{ width: '100%', textAlign: 'center' }}>
         <Box role="main">
           {transferList.length > 0 ? (
-            <TrackAddressGraph transferList={transferList} names={names} />
+            <TrackAddressGraph
+              transferList={transferList}
+              names={names}
+              fetchList={fetchList}
+              addSearch={addSearch}
+            />
           ) : (
             <>
               <Typography
