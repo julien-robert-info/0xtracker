@@ -158,8 +158,9 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                               >
                                 {transfer.from == address.address ? (
                                   <ListItemText
-                                    primary={`sent ${ethers.utils.formatEther(
-                                      transfer.value
+                                    primary={`sent ${ethers.utils.formatUnits(
+                                      transfer.value,
+                                      transfer.tokenDecimal
                                     )} ${
                                       transfer.tokenSymbol
                                     } to ${formatAddress(
@@ -181,8 +182,9 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                                   />
                                 ) : (
                                   <ListItemText
-                                    primary={`received ${ethers.utils.formatEther(
-                                      transfer.value
+                                    primary={`received ${ethers.utils.formatUnits(
+                                      transfer.value,
+                                      transfer.tokenDecimal
                                     )} ${
                                       transfer.tokenSymbol
                                     } from ${formatAddress(

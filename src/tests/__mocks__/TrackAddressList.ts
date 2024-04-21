@@ -8,7 +8,8 @@ export const mockedTransferList: TransferList = [
     to: '0x000000000000000000000000000000000000dead',
     value: 12,
     tokenSymbol: 'USDC',
-    hash: '0x598ed562641aa9e59738c364ca93a4cbf14dc87d16f25c99220e8eed0e4f415b'
+    hash: '0x598ed562641aa9e59738c364ca93a4cbf14dc87d16f25c99220e8eed0e4f415b',
+    tokenDecimal: 18
   },
   {
     chainId: 137,
@@ -17,7 +18,8 @@ export const mockedTransferList: TransferList = [
     to: '0x000000000000000000000000000000000000dead',
     value: 12,
     tokenSymbol: 'USDC',
-    hash: '0x9295bb2932842fa2eea2e1146df794a33652d5dd8cde2db68a9db0cc1ed056a0'
+    hash: '0x9295bb2932842fa2eea2e1146df794a33652d5dd8cde2db68a9db0cc1ed056a0',
+    tokenDecimal: 18
   },
   {
     chainId: 137,
@@ -26,7 +28,8 @@ export const mockedTransferList: TransferList = [
     to: '0x000000000000000000000000000000000000dead',
     value: 12,
     tokenSymbol: 'USDC',
-    hash: '0x51183fa455aeeb042de4b50ece7378b5315e74c49fee2be0a74edb3cdc99750a'
+    hash: '0x51183fa455aeeb042de4b50ece7378b5315e74c49fee2be0a74edb3cdc99750a',
+    tokenDecimal: 18
   },
   {
     chainId: 137,
@@ -35,6 +38,7 @@ export const mockedTransferList: TransferList = [
     to: '0x000000000000000000000000000000000000dead',
     value: 12,
     tokenSymbol: 'USDC',
-    hash: '0x14486c928b2dca4bb8606ebb3a4fa04ec5463c0ab2a810c4aeb32dfdf9716805'
+    hash: '0x14486c928b2dca4bb8606ebb3a4fa04ec5463c0ab2a810c4aeb32dfdf9716805',
+    tokenDecimal: 18
   }
 ]
