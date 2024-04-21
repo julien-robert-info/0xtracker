@@ -105,45 +105,47 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                     </ListItemButton>
                     <Collapse in={selected === `${chainId}-${address.address}`}>
                       <Paper elevation={9}>
-                        {hiddenNodes.findIndex(
-                          (node) => node === `${chainId}-${address.address}`
-                        ) !== -1 ? (
-                          <IconButton
-                            aria-label="show"
-                            size="small"
-                            onClick={() =>
-                              setHiddenNodes(
-                                hiddenNodes.filter(
-                                  (node) =>
-                                    node !== `${chainId}-${address.address}`
-                                )
-                              )
-                            }
+                          <Box sx={{ flex: 1 }}>
+                            {hiddenNodes.findIndex(
+                              (node) => node === `${chainId}-${address.address}`
+                            ) !== -1 ? (
+                              <IconButton
+                                aria-label="show"
+                                size="small"
+                                onClick={() =>
+                                  setHiddenNodes(
+                                    hiddenNodes.filter(
+                                      (node) =>
+                                        node !== `${chainId}-${address.address}`
+                                    )
+                                  )
+                                }
+                              >
+                                <VisibilityIcon fontSize="inherit" />
+                              </IconButton>
+                            ) : (
+                              <IconButton
+                                aria-label="hide"
+                                size="small"
+                                onClick={() =>
+                                  setHiddenNodes([
+                                    ...hiddenNodes,
+                                    `${chainId}-${address.address}`
+                                  ])
+                                }
+                              >
+                                <VisibilityOffIcon fontSize="inherit" />
+                              </IconButton>
+                            )}
+                          </Box>
+                          <Link
+                            href={`${DEBANK_URL}${address.address}`}
+                            target="blank"
+                            underline="hover"
+                            sx={{ color: 'text.secondary', flex: 1 }}
                           >
-                            <VisibilityIcon fontSize="inherit" />
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            aria-label="hide"
-                            size="small"
-                            onClick={() =>
-                              setHiddenNodes([
-                                ...hiddenNodes,
-                                `${chainId}-${address.address}`
-                              ])
-                            }
-                          >
-                            <VisibilityOffIcon fontSize="inherit" />
-                          </IconButton>
-                        )}
-                        <Link
-                          href={`${DEBANK_URL}${address.address}`}
-                          target="blank"
-                          underline="hover"
-                          sx={{ color: 'text.secondary' }}
-                        >
-                          Debank
-                        </Link>
+                            Debank
+                          </Link>
                         <List>
                           {address.transfers
                             .sort(

@@ -7,8 +7,6 @@ describe('TrackAddressForm component', () => {
   it('render the form with correct initial values', () => {
     const initialFormValues: TrackAddressFormValues = {
       searchAddress: 'test',
-      minToDig: 2,
-      maxNodes: 100,
       selectedNetworks: ['56']
     }
 
@@ -25,12 +23,6 @@ describe('TrackAddressForm component', () => {
 
     fireEvent.focus(addressInput)
 
-    const minToDigInput = screen.getByRole('textbox', {
-      name: /Min transfers to dig/i
-    })
-    const maxNodesInput = screen.getByRole('textbox', {
-      name: /Max nodes per chain/i
-    })
     const selectedNetworksSelect = screen.getByRole('button', {
       name: /Networks/i
     })
@@ -40,10 +32,6 @@ describe('TrackAddressForm component', () => {
 
     expect(addressInput).toBeInTheDocument()
     expect(addressInput).toHaveValue('test')
-    expect(minToDigInput).toBeInTheDocument()
-    expect(minToDigInput).toHaveValue('2')
-    expect(maxNodesInput).toBeInTheDocument()
-    expect(maxNodesInput).toHaveValue('100')
     expect(selectedNetworksSelect).toBeInTheDocument()
     expect(selectedNetworksSelect).toHaveTextContent('BSC')
     expect(searchButton).toBeInTheDocument()
@@ -52,14 +40,10 @@ describe('TrackAddressForm component', () => {
   it('trigger the set function on submit and return correct values', () => {
     const initialFormValues: TrackAddressFormValues = {
       searchAddress: '',
-      minToDig: 2,
-      maxNodes: 100,
       selectedNetworks: ['137']
     }
     const newFormValues: TrackAddressFormValues = {
       searchAddress: 'test',
-      minToDig: 3,
-      maxNodes: 50,
       selectedNetworks: ['137', '56']
     }
     const mockSet = jest.fn()
@@ -78,12 +62,6 @@ describe('TrackAddressForm component', () => {
 
     fireEvent.focus(addressInput)
 
-    const minToDigInput = screen.getByRole('textbox', {
-      name: /Min transfers to dig/i
-    })
-    const maxNodesInput = screen.getByRole('textbox', {
-      name: /Max nodes per chain/i
-    })
     const selectedNetworksSelect = screen.getByRole('button', {
       name: /Networks/i
     })
@@ -93,12 +71,6 @@ describe('TrackAddressForm component', () => {
 
     fireEvent.change(addressInput, {
       target: { value: newFormValues.searchAddress }
-    })
-    fireEvent.change(minToDigInput, {
-      target: { value: newFormValues.minToDig }
-    })
-    fireEvent.change(maxNodesInput, {
-      target: { value: newFormValues.maxNodes }
     })
 
     fireEvent.mouseDown(selectedNetworksSelect)
@@ -115,8 +87,6 @@ describe('TrackAddressForm component', () => {
   it('show a loading button while loading', () => {
     const initialFormValues: TrackAddressFormValues = {
       searchAddress: '',
-      minToDig: 2,
-      maxNodes: 100,
       selectedNetworks: ['137']
     }
 

@@ -24,7 +24,7 @@ describe('HomePage', () => {
   })
 
   it('switch display to graph on search result', async () => {
-    fetch.mockResponse(blockExplorerApiResponse)
+    fetch.mockResponses(blockExplorerApiResponse)
     render(<Home />)
 
     const addressInput = screen.getByRole('textbox', {

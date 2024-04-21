@@ -21,15 +21,9 @@ export const useTracker = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [transferList, setTransferList] = React.useState<TransferList>([])
   const [searchList, setSearchList] = React.useState<Search[]>([])
-  const [isFetching, setIsFetching] = React.useState(false)
   const fetchList = React.useRef<Search[]>([])
-  const missingNodes = React.useRef<{ chain: string; missingNodes: number }[]>(
-    []
-  )
   const searchValue = React.useRef<TrackAddressFormValues>({
     searchAddress: '',
-    minToDig: 0,
-    maxNodes: 0,
     selectedNetworks: []
   })
   const { library } = useWeb3React()
@@ -39,6 +33,7 @@ export const useTracker = () => {
     formValues: TrackAddressFormValues,
     setFormValues: (formValues: TrackAddressFormValues) => void
   ) => {
+    setIsLoading(true)
     if (formValues.searchAddress !== '') {
       if (!ethers.utils.isAddress(formValues.searchAddress)) {
         //ENS resolution
@@ -46,6 +41,7 @@ export const useTracker = () => {
         if (resolved) {
           setFormValues({ ...formValues, searchAddress: resolved as string })
         } else {
+          setIsLoading(false)
           console.log('invalid address!')
         }
         return
@@ -56,14 +52,8 @@ export const useTracker = () => {
       setTransferList([])
       setSearchList([])
       fetchList.current = []
-      missingNodes.current = []
 
       searchValue.current.selectedNetworks.map((chainId) => {
-        missingNodes.current = [
-          ...missingNodes.current,
-          { chain: chainId, missingNodes: searchValue.current.maxNodes }
-        ]
-
         //search for each selected networks
         setSearchList((searchList) => [
           ...searchList,

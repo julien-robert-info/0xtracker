@@ -9,8 +9,6 @@ const Home = () => {
   const didMount = React.useRef(false)
   const [formValues, setFormValues] = React.useState<TrackAddressFormValues>({
     searchAddress: 'aavechan.eth',
-    minToDig: 2,
-    maxNodes: 20,
     selectedNetworks: ['1', '137']
   })
   const { search, transferList, names, isLoading } = useTracker()

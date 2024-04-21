@@ -30,8 +30,6 @@ export interface TrackAddressFormProps {
 
 export interface TrackAddressFormValues {
   searchAddress: string
-  minToDig: number
-  maxNodes: number
   selectedNetworks: string[]
 }
 
@@ -52,12 +50,6 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>(
     trackAddressFormValues.selectedNetworks
   )
-  const [minToDig, setMinToDig] = React.useState(
-    trackAddressFormValues.minToDig
-  )
-  const [maxNodes, setMaxNodes] = React.useState(
-    trackAddressFormValues.maxNodes
-  )
   const [displayFullForm, setDisplayFullForm] = React.useState(false)
 
   const handleSelect = (event: SelectChangeEvent<string[]>) => {
@@ -72,8 +64,6 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
     setDisplayFullForm(false)
     setTrackAddressFormValues({
       searchAddress: searchAddress,
-      minToDig: minToDig,
-      maxNodes: maxNodes,
       selectedNetworks: selectedNetworks
     })
   }
@@ -143,33 +133,6 @@ const TrackAddressForm: React.FC<TrackAddressFormProps> = ({
               ))}
             </Select>
           </FormControl>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              mt: 1,
-              textAlign: 'right'
-            }}
-          >
-            <TextField
-              value={minToDig}
-              onChange={(e) => setMinToDig(Number(e.target.value))}
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              sx={{ ml: 1, flex: 1 }}
-              label="Min transfers to dig"
-              variant="standard"
-              size="small"
-            />
-            <TextField
-              value={maxNodes}
-              onChange={(e) => setMaxNodes(Number(e.target.value))}
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              sx={{ ml: 1, flex: 1 }}
-              label="Max nodes per chain"
-              variant="standard"
-              size="small"
-            />
-          </Box>
         </Collapse>
       </Box>
     </ClickAwayListener>

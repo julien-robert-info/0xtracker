@@ -7,9 +7,16 @@ describe('TrackAddressGraph component', () => {
   it('init the svg', () => {
     const transferList: TransferList = []
     const names: Names = []
+    const fetchList = { current: [] }
+    const addSearch = jest.fn()
 
     const { container } = render(
-      <TrackAddressGraph transferList={transferList} names={names} />
+      <TrackAddressGraph
+        transferList={transferList}
+        names={names}
+        fetchList={fetchList}
+        addSearch={addSearch}
+      />
     )
 
     const graph = container.querySelector('.graph')
@@ -22,13 +29,27 @@ describe('TrackAddressGraph component', () => {
   it('render nodes and links', () => {
     let transferList: TransferList = []
     const names: Names = []
+    const fetchList = { current: [] }
+    const addSearch = jest.fn()
 
     const { container, rerender } = render(
-      <TrackAddressGraph transferList={transferList} names={names} />
+      <TrackAddressGraph
+        transferList={transferList}
+        names={names}
+        fetchList={fetchList}
+        addSearch={addSearch}
+      />
     )
 
     transferList = mockedTransferList
-    rerender(<TrackAddressGraph transferList={transferList} names={names} />)
+    rerender(
+      <TrackAddressGraph
+        transferList={transferList}
+        names={names}
+        fetchList={fetchList}
+        addSearch={addSearch}
+      />
+    )
 
     const nodes = container.querySelector('.nodes')
     const links = container.querySelector('.links')
@@ -40,9 +61,16 @@ describe('TrackAddressGraph component', () => {
   it('render names', async () => {
     let transferList: TransferList = []
     let names: Names = []
+    const fetchList = { current: [] }
+    const addSearch = jest.fn()
 
     const { rerender } = render(
-      <TrackAddressGraph transferList={transferList} names={names} />
+      <TrackAddressGraph
+        transferList={transferList}
+        names={names}
+        fetchList={fetchList}
+        addSearch={addSearch}
+      />
     )
 
     transferList = mockedTransferList
@@ -52,7 +80,14 @@ describe('TrackAddressGraph component', () => {
         name: 'vitalik.eth'
       }
     ]
-    rerender(<TrackAddressGraph transferList={transferList} names={names} />)
+    rerender(
+      <TrackAddressGraph
+        transferList={transferList}
+        names={names}
+        fetchList={fetchList}
+        addSearch={addSearch}
+      />
+    )
 
     const name = screen.findByText('vitalik.eth', { selector: 'text' })
 
