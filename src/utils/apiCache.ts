@@ -12,7 +12,6 @@ export const makeApiCall = async (request: string, chainId: number) => {
   const cachedResponse = cache.get(key)
 
   if (cachedResponse) {
-    // console.log(`cache served ${key}`)
     return cachedResponse
   }
 
@@ -21,7 +20,6 @@ export const makeApiCall = async (request: string, chainId: number) => {
     response.status === '1' ||
     response.result == 'Missing contract addresses'
   ) {
-    // console.log(`cached ${key}`)
     cache.set(key, response)
   }
 

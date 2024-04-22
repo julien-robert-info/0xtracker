@@ -35,11 +35,11 @@ export const getErc20EventsFromAddress = async (
     try {
       response = await fetch(
         `api/get-transfer-list?chainId=${chainId}&address=${address}&startblock=${startblock}`
-      ).then(async (e) => {
-        if (e.status === 200) {
-          return await e.json()
+      ).then(async (res) => {
+        if (res.status === 200) {
+          return await res.json()
         }
-        throw await e.json()
+        throw await res.json()
       })
       transferList = [...transferList, ...response.result]
       startblock = Number(transferList[transferList.length - 1].blockNumber) + 1
