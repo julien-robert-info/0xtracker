@@ -5,6 +5,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Chip,
   Collapse,
   IconButton,
   Link,
@@ -21,6 +22,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import DownloadIcon from '@mui/icons-material/Download'
 import { chains } from 'data/networks'
 import { DEBANK_URL, Names, Search, TransferList, formatAddress } from 'utils'
+import { Tags } from 'utils/useExplorerTags'
 
 export type TrackList = Array<
   Array<{
@@ -32,6 +34,7 @@ export type TrackList = Array<
 interface TrackAddressListProps {
   list: TrackList
   names: Names
+  tags: Tags
   fetchList: React.MutableRefObject<Search[]>
   selected: string | null
   setSelected: (selected: string | null) => void
@@ -43,6 +46,7 @@ interface TrackAddressListProps {
 const TrackAddressList: React.FC<TrackAddressListProps> = ({
   list,
   names,
+  tags,
   fetchList,
   selected,
   setSelected,
@@ -50,6 +54,7 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
   setHiddenNodes,
   addSearch
 }) => {
+  console.log(tags)
   return (
     <Box maxWidth={300}>
       {list.map((addresses, chainId) => (
@@ -97,6 +102,18 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                                   (i) => i.address === address.address
                                 )
                               ].name
+                            : tags.findIndex(
+                                (i) =>
+                                  i.chainId === chainId &&
+                                  i.address === address.address
+                              ) !== -1
+                            ? tags[
+                                tags.findIndex(
+                                  (i) =>
+                                    i.chainId === chainId &&
+                                    i.address === address.address
+                                )
+                              ].tag.name
                             : address.address,
                           20
                         )} (${address.transfers.length})`}
@@ -110,6 +127,27 @@ const TrackAddressList: React.FC<TrackAddressListProps> = ({
                     </ListItemButton>
                     <Collapse in={selected === `${chainId}-${address.address}`}>
                       <Paper elevation={9}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            flexWrap: 'wrap'
+                          }}
+                        >
+                          {tags[
+                            tags.findIndex(
+                              (i) =>
+                                i.chainId === chainId &&
+                                i.address === address.address
+                            )
+                          ]?.tag.labels.map((label, i) => (
+                            <Chip
+                              key={`tag-${i}-${chainId}-${address.address}`}
+                              label={label}
+                              sx={{ m: 1 }}
+                            />
+                          ))}
+                        </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <Box sx={{ flex: 1 }}>
                             <IconButton

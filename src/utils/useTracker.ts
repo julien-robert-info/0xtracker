@@ -8,6 +8,7 @@ import {
   TransferList,
   useEnsNames
 } from 'utils'
+import { useExplorerTags } from './useExplorerTags'
 
 export type Search = {
   chainId: number
@@ -26,6 +27,7 @@ export const useTracker = () => {
   })
   const { library } = useWeb3React()
   const names = useEnsNames(transferList)
+  const tags = useExplorerTags(transferList)
 
   const search = async (
     formValues: TrackAddressFormValues,
@@ -100,5 +102,5 @@ export const useTracker = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchList])
 
-  return { search, addSearch, transferList, fetchList, names, isLoading }
+  return { search, addSearch, transferList, fetchList, names, tags, isLoading }
 }

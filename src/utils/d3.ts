@@ -5,6 +5,7 @@ export type Node = {
   chain: number
   address: string
   name?: string
+  tags?: string[]
   color: string
 }
 

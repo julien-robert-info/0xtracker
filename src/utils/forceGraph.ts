@@ -11,6 +11,7 @@ import {
   TransferList,
   uniqueAddressList
 } from 'utils'
+import { Tags } from './useExplorerTags'
 
 type graphColors = {
   chainId: number
@@ -45,6 +46,7 @@ const labelWidth = 40
 export const getDataFromTransferList = (
   transferList: TransferList,
   names: Names,
+  tags: Tags,
   hiddenNodes: string[]
 ) => {
   let nodes: Node[] = []
@@ -75,6 +77,11 @@ export const getDataFromTransferList = (
           chain: chainId,
           address: address,
           name: names[names.findIndex((i) => i.address === address)]?.name,
+          tags: tags[
+            tags.findIndex(
+              (i) => i.address === address && i.chainId === chainId
+            )
+          ]?.tag.labels,
           color: colors[colors.findIndex((i) => i.chainId === chainId)].node
         })
       }
@@ -234,7 +241,9 @@ const updateNode = (
   selection
     .select('text')
     .attr('fill', textColor)
-    .text((d) => (d.name ? d.name : `${formatAddress(d.address, 8)}`))
+    .text((d) =>
+      d.name ? d.name : d.tags ? d.tags[0] : `${formatAddress(d.address, 8)}`
+    )
 
   selection
     .on('mouseover', (e) => {

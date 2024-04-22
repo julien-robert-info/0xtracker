@@ -15,13 +15,15 @@ import { Button, Collapse, IconButton, Paper } from '@mui/material'
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
 import ListIcon from '@mui/icons-material/List'
 import TrackAddressList, { TrackList } from './TrackAddressList'
+import { Tags } from 'utils/useExplorerTags'
 
 const TrackAddressGraph: React.FC<{
   transferList: TransferList
   names: Names
+  tags: Tags
   fetchList: React.MutableRefObject<Search[]>
   addSearch: (search: Search) => void
-}> = ({ transferList, names, fetchList, addSearch }) => {
+}> = ({ transferList, names, tags, fetchList, addSearch }) => {
   const didMount = React.useRef(false)
   const theme = useTheme()
   const { svgRef, svgContainerRef, width, height } = useD3()
@@ -29,8 +31,8 @@ const TrackAddressGraph: React.FC<{
   const [selected, setSelected] = React.useState<string | null>(null)
   const [hiddenNodes, setHiddenNodes] = React.useState<string[]>([])
   const data: { graph: GraphData; list: TrackList } = React.useMemo(
-    () => getDataFromTransferList(transferList, names, hiddenNodes),
-    [transferList, names, hiddenNodes]
+    () => getDataFromTransferList(transferList, names, tags, hiddenNodes),
+    [transferList, names, tags, hiddenNodes]
   )
 
   // init graph on 1st render then update graph on graphData update
@@ -113,6 +115,7 @@ const TrackAddressGraph: React.FC<{
           <TrackAddressList
             list={data.list}
             names={names}
+            tags={tags}
             selected={selected}
             setSelected={setSelected}
             hiddenNodes={hiddenNodes}

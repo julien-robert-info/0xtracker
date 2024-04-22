@@ -11,7 +11,7 @@ const Home = () => {
     searchAddress: '0x0aC6368dfdDC12AF70455d63f83d1E9BE76E4c85',
     selectedNetworks: ['1', '137']
   })
-  const { search, addSearch, transferList, fetchList, names, isLoading } =
+  const { search, addSearch, transferList, fetchList, names, tags, isLoading } =
     useTracker()
 
   // Launch new search on formvalues update
@@ -40,6 +40,7 @@ const Home = () => {
             <TrackAddressGraph
               transferList={transferList}
               names={names}
+              tags={tags}
               fetchList={fetchList}
               addSearch={addSearch}
             />

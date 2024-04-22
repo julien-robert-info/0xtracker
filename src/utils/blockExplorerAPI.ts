@@ -1,3 +1,5 @@
+import { Tag } from 'pages/api/get-tags'
+
 export const DEBANK_URL = 'https://debank.com/profile/'
 
 export type TransferList = Array<{
@@ -72,6 +74,25 @@ export const getTransfersFromErc20Events = (
   })
 
   return transfers
+}
+
+export const getTags = async (
+  address: string,
+  chainId: number
+): Promise<Tag | undefined> => {
+  try {
+    return await fetch(
+      `/api/get-tags?chainId=${chainId}&address=${address}`
+    ).then(async (res) => {
+      const response = await res.json()
+      if (res.status === 200) {
+        return response
+      }
+      throw response
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const uniqueAddressList = (transferList: TransferList) => {
