@@ -1,22 +1,32 @@
 import { render, screen } from '@testing-library/react'
 import TrackAddressGraph from 'components/TrackAddressGraph'
 import { mockedTransferList } from 'tests/__mocks__/TrackAddressList'
-import { Names, TransferList } from 'utils'
+import { Names, Tags, TrackerContext, TransferList } from 'utils'
 
 describe('TrackAddressGraph component', () => {
   it('init the svg', () => {
     const transferList: TransferList = []
     const names: Names = []
+    const tags: Tags = []
     const fetchList = { current: [] }
     const addSearch = jest.fn()
+    const isLoading = false
+    const search = jest.fn()
 
     const { container } = render(
-      <TrackAddressGraph
-        transferList={transferList}
-        names={names}
-        fetchList={fetchList}
-        addSearch={addSearch}
-      />
+      <TrackerContext.Provider
+        value={{
+          transferList,
+          names,
+          tags,
+          fetchList,
+          addSearch,
+          isLoading,
+          search
+        }}
+      >
+        <TrackAddressGraph />
+      </TrackerContext.Provider>
     )
 
     const graph = container.querySelector('.graph')
@@ -29,26 +39,43 @@ describe('TrackAddressGraph component', () => {
   it('render nodes and links', () => {
     let transferList: TransferList = []
     const names: Names = []
+    const tags: Tags = []
     const fetchList = { current: [] }
     const addSearch = jest.fn()
+    const isLoading = false
+    const search = jest.fn()
 
     const { container, rerender } = render(
-      <TrackAddressGraph
-        transferList={transferList}
-        names={names}
-        fetchList={fetchList}
-        addSearch={addSearch}
-      />
+      <TrackerContext.Provider
+        value={{
+          transferList,
+          names,
+          tags,
+          fetchList,
+          addSearch,
+          isLoading,
+          search
+        }}
+      >
+        <TrackAddressGraph />
+      </TrackerContext.Provider>
     )
 
     transferList = mockedTransferList
     rerender(
-      <TrackAddressGraph
-        transferList={transferList}
-        names={names}
-        fetchList={fetchList}
-        addSearch={addSearch}
-      />
+      <TrackerContext.Provider
+        value={{
+          transferList,
+          names,
+          tags,
+          fetchList,
+          addSearch,
+          isLoading,
+          search
+        }}
+      >
+        <TrackAddressGraph />
+      </TrackerContext.Provider>
     )
 
     const nodes = container.querySelector('.nodes')
@@ -61,16 +88,26 @@ describe('TrackAddressGraph component', () => {
   it('render names', async () => {
     let transferList: TransferList = []
     let names: Names = []
+    const tags: Tags = []
     const fetchList = { current: [] }
     const addSearch = jest.fn()
+    const isLoading = false
+    const search = jest.fn()
 
     const { rerender } = render(
-      <TrackAddressGraph
-        transferList={transferList}
-        names={names}
-        fetchList={fetchList}
-        addSearch={addSearch}
-      />
+      <TrackerContext.Provider
+        value={{
+          transferList,
+          names,
+          tags,
+          fetchList,
+          addSearch,
+          isLoading,
+          search
+        }}
+      >
+        <TrackAddressGraph />
+      </TrackerContext.Provider>
     )
 
     transferList = mockedTransferList
@@ -81,12 +118,19 @@ describe('TrackAddressGraph component', () => {
       }
     ]
     rerender(
-      <TrackAddressGraph
-        transferList={transferList}
-        names={names}
-        fetchList={fetchList}
-        addSearch={addSearch}
-      />
+      <TrackerContext.Provider
+        value={{
+          transferList,
+          names,
+          tags,
+          fetchList,
+          addSearch,
+          isLoading,
+          search
+        }}
+      >
+        <TrackAddressGraph />
+      </TrackerContext.Provider>
     )
 
     const name = screen.findByText('vitalik.eth', { selector: 'text' })

@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import fetch from 'jest-fetch-mock'
 import Home from 'pages'
 import { blockExplorerApiResponse } from 'tests/__mocks__/blockExplorerAPI'
+import { TrackerProvider } from 'utils'
 
 describe('HomePage', () => {
   beforeEach(() => {
@@ -25,7 +26,11 @@ describe('HomePage', () => {
 
   it('switch display to graph on search result', async () => {
     fetch.mockResponses(blockExplorerApiResponse)
-    render(<Home />)
+    render(
+      <TrackerProvider>
+        <Home />
+      </TrackerProvider>
+    )
 
     const addressInput = screen.getByRole('textbox', {
       name: /address/i

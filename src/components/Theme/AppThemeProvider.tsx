@@ -43,10 +43,8 @@ export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     themeList[themeList.findIndex((i) => i.name === themeName)].theme
 
   return (
-    <>
-      <ThemeContext.Provider value={themeContext}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </ThemeContext.Provider>
-    </>
+    <ThemeContext.Provider value={themeContext}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </ThemeContext.Provider>
   )
 }

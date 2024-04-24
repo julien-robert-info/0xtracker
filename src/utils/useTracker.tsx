@@ -5,17 +5,45 @@ import { useWeb3React } from '@web3-react/core'
 import {
   getErc20EventsFromAddress,
   getTransfersFromErc20Events,
+  Names,
   TransferList,
   useEnsNames
 } from 'utils'
-import { useExplorerTags } from './useExplorerTags'
+import { Tags, useExplorerTags } from './useExplorerTags'
 
 export type Search = {
   chainId: number
   address: string
 }
 
-export const useTracker = () => {
+type TrackerContextType = {
+  search: (
+    formValues: TrackAddressFormValues,
+    setFormValues: (formValues: TrackAddressFormValues) => void
+  ) => Promise<void>
+  addSearch: (search: Search) => Promise<void>
+  transferList: TransferList
+  fetchList: React.MutableRefObject<Search[]>
+  names: Names
+  tags: Tags
+  isLoading: boolean
+}
+
+export const TrackerContext = React.createContext<TrackerContextType>({
+  search: async () => {},
+  addSearch: async () => {},
+  transferList: [],
+  fetchList: { current: [] },
+  names: [],
+  tags: [],
+  isLoading: false
+})
+
+export const useTracker = () => React.useContext(TrackerContext)
+
+export const TrackerProvider: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => {
   const didMount = React.useRef(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [transferList, setTransferList] = React.useState<TransferList>([])
@@ -102,5 +130,19 @@ export const useTracker = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchList])
 
-  return { search, addSearch, transferList, fetchList, names, tags, isLoading }
+  const trackerContext = {
+    search,
+    addSearch,
+    transferList,
+    fetchList,
+    names,
+    tags,
+    isLoading
+  }
+
+  return (
+    <TrackerContext.Provider value={trackerContext}>
+      {children}
+    </TrackerContext.Provider>
+  )
 }

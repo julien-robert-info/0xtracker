@@ -2,7 +2,7 @@ import React from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { CacheProvider, EmotionCache } from '@emotion/react'
-import { createEmotionCache } from 'utils'
+import { TrackerProvider, createEmotionCache } from 'utils'
 import { CssBaseline } from '@mui/material'
 import { Web3ReactProvider } from '@web3-react/core'
 import {
@@ -42,7 +42,9 @@ const App: React.FC<MyAppProps> = (props) => {
           <CssBaseline />
           <Web3ReactProvider getLibrary={getLibrary}>
             <Layout>
-              <Component {...pageProps} />
+              <TrackerProvider>
+                <Component {...pageProps} />
+              </TrackerProvider>
             </Layout>
           </Web3ReactProvider>
         </AppThemeProvider>

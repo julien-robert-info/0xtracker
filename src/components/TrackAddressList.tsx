@@ -21,8 +21,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import DownloadIcon from '@mui/icons-material/Download'
 import { chains } from 'data/networks'
-import { DEBANK_URL, Names, Search, TransferList, formatAddress } from 'utils'
-import { Tags } from 'utils/useExplorerTags'
+import { DEBANK_URL, TransferList, formatAddress, useTracker } from 'utils'
 
 export type TrackList = Array<
   Array<{
@@ -33,28 +32,20 @@ export type TrackList = Array<
 
 interface TrackAddressListProps {
   list: TrackList
-  names: Names
-  tags: Tags
-  fetchList: React.MutableRefObject<Search[]>
   selected: string | null
   setSelected: (selected: string | null) => void
   hiddenNodes: string[]
   setHiddenNodes: (nodes: string[]) => void
-  addSearch: (search: Search) => void
 }
 
 const TrackAddressList: React.FC<TrackAddressListProps> = ({
   list,
-  names,
-  tags,
-  fetchList,
   selected,
   setSelected,
   hiddenNodes,
-  setHiddenNodes,
-  addSearch
+  setHiddenNodes
 }) => {
-  console.log(tags)
+  const { fetchList, names, tags, addSearch } = useTracker()
   return (
     <Box maxWidth={300}>
       {list.map((addresses, chainId) => (

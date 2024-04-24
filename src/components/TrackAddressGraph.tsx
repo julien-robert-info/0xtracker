@@ -3,33 +3,25 @@ import {
   getDataFromTransferList,
   GraphData,
   initGraph,
-  Names,
-  Search,
   setNodeSelected,
-  TransferList,
   updateGraph,
-  useD3
+  useD3,
+  useTracker
 } from 'utils'
 import { useTheme } from '@mui/material/styles'
 import { Button, Collapse, IconButton, Paper } from '@mui/material'
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight'
 import ListIcon from '@mui/icons-material/List'
 import TrackAddressList, { TrackList } from './TrackAddressList'
-import { Tags } from 'utils/useExplorerTags'
 
-const TrackAddressGraph: React.FC<{
-  transferList: TransferList
-  names: Names
-  tags: Tags
-  fetchList: React.MutableRefObject<Search[]>
-  addSearch: (search: Search) => void
-}> = ({ transferList, names, tags, fetchList, addSearch }) => {
+const TrackAddressGraph = () => {
   const didMount = React.useRef(false)
   const theme = useTheme()
   const { svgRef, svgContainerRef, width, height } = useD3()
   const [displayList, setDisplayList] = React.useState(true)
   const [selected, setSelected] = React.useState<string | null>(null)
   const [hiddenNodes, setHiddenNodes] = React.useState<string[]>([])
+  const { transferList, names, tags } = useTracker()
   const data: { graph: GraphData; list: TrackList } = React.useMemo(
     () => getDataFromTransferList(transferList, names, tags, hiddenNodes),
     [transferList, names, tags, hiddenNodes]
@@ -114,14 +106,10 @@ const TrackAddressGraph: React.FC<{
           </IconButton>
           <TrackAddressList
             list={data.list}
-            names={names}
-            tags={tags}
             selected={selected}
             setSelected={setSelected}
             hiddenNodes={hiddenNodes}
             setHiddenNodes={setHiddenNodes}
-            fetchList={fetchList}
-            addSearch={addSearch}
           />
         </Paper>
       </Collapse>
