@@ -107,8 +107,6 @@ export const TrackerProvider: React.FC<{ children: React.ReactNode }> = ({
       fetchList.current.push(search)
       const transfers = getTransfersFromErc20Events(search.chainId, erc20List)
       setTransferList((transferList) => [...transferList, ...transfers])
-      console.log('erc20List', erc20List, search)
-      console.log('transfers', transfers, search)
     }
     setIsLoading(false)
   }

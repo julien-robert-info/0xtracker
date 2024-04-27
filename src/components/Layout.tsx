@@ -14,8 +14,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({
       if (!active) {
         try {
           await activate(networkConnector)
-        } catch (e) {
-          console.log(e)
+        } catch (error) {
+          console.log(error)
         }
       }
     }
